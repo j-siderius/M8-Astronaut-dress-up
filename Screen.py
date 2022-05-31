@@ -64,6 +64,7 @@ class Screen:
 		Starts the main loop
 		"""
 		self.run = True
+		self.loop()
 
 	def stop(self):
 		"""

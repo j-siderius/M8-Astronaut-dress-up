@@ -6,7 +6,7 @@ def run():
 	"""
 	Start functions, initializes the screen
 	"""
-	screen = Screen(0, 0, loop, drawLoop, title="Test window")
+	screen = Screen(200, 200, loop, drawLoop, title="Test window")
 	screen.start()
 
 
