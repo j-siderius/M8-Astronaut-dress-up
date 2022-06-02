@@ -1,0 +1,11 @@
+Planet;G-force;Toxic;Oxygen;Surface Temperature;Equator radius;Colors
+Mercury;0,378;No;No;167;2.440;Grey
+Venus;0,908;Yes;No;464;6.052;Brown, Grey
+Earth;1,000;No;Yes;15;6.371;Blue, Brown, Green, White
+Moon (moon);0,163;No;No;-20;1.738;Grey
+Mars;0,378;Yes;No;-65;3.390;Red, Brown, Tan
+Jupiter;2,541;No;No;-110;69.910;Brown, Orange, Tan, White stripes
+Saturn;1,061;No;No;-140;58.200;Golden, Brown, Glue-grey
+Uranus;0,908;Yes;No;-195;25.400;Blue-green
+Neptune;1,143;Yes;No;-200;24.600;Blue
+Pluto;0,071;Yes;No;-225;1.188;Reddish-brown
