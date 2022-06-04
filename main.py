@@ -1,3 +1,8 @@
+"""
+This class manages all the other classes in python and will handle the interaction between classes
+"""
+
+
 from Screen import Screen
 import pygame
 
