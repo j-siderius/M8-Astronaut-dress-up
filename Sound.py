@@ -2,6 +2,9 @@
 This class will handle the audio coming from python
 """
 
+def __init__(self):
+
+
 def audioSetup():
 """
 This function will setup the audio

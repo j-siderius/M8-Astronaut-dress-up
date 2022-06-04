@@ -2,6 +2,9 @@
 This class handles the serial connection between laptop and arduino
 """
 
+def __init__(self):
+
+
 def serialPorts():
 """
 This function will handle the connection to arduino

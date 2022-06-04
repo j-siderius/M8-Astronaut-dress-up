@@ -2,6 +2,9 @@
  This class takes care of retrieving the data from the .csv file and does the calculations with it
  """
 
+def __init__(self):
+
+
 def dataConnect():
 """
 This function will connect to the .csv file.

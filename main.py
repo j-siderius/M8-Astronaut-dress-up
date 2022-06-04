@@ -13,6 +13,13 @@ def run():
 	"""
 	screen = Screen(200, 200, loop, drawLoop, title="Test window")
 	screen.start()
+	sound = Sound()
+	sound.audioSetup()
+	datCalc = DataCalculations()
+	datCalc.dataConnect()
+	serial = SerialController()
+	serial.serialPorts()
+
 
 
 def loop():
@@ -25,6 +32,8 @@ def drawLoop():
 	"""
 	Main draw loop, gets run at fixed interval (determined by framerate)
 	"""
+	screen.loop()
+	sound.mixer()
 
 
 if __name__ == '__main__':
