@@ -2,28 +2,30 @@
 This class handles the serial connection between laptop and arduino
 """
 
-def __init__(self):
+class Serial:
 
+    def __init__(self):
+        "Insert stuff"
 
-def serialPorts():
-"""
-This function will handle the connection to arduino
-"""
+    def serialPorts(self):
+        """
+        This function will handle the connection to arduino
+        """
 
-def messageSend():
-"""
-This function will send a message to arduino
-"""
+    def messageSend(self):
+        """
+        This function will send a message to arduino
+        """
 
-def messageReceive():
-"""
-This function will check received messages from arduino
-"""
+    def messageReceive(self):
+        """
+        This function will check received messages from arduino
+        """
 
-def messageQueue():
-"""
-This function will contain the queue for messages
-"""
+    def messageQueue(self):
+        """
+        This function will contain the queue for messages
+        """
 
 
 

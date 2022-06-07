@@ -2,16 +2,18 @@
 This class will handle the audio coming from python
 """
 
-def __init__(self):
+class Sound:
 
+    def __init__(self):
+        "Insert stuff"
 
-def audioSetup():
-"""
-This function will setup the audio
-"""
+    def audioSetup(self):
+        """
+        This function will setup the audio
+        """
 
-def mixer():
-"""
-This function will handle the sounds and when they should be played
-"""
+    def mixer(self):
+        """
+        This function will handle the sounds and when they should be played
+        """
 
