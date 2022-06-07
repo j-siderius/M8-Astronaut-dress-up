@@ -8,36 +8,42 @@ from SerialController import Serial
 from DataCalculations import DatCalc
 import pygame
 
-def run():
-	"""
-	Start functions, initializes the screen
-	"""
-	datCalc = DatCalc()
+class Main:
 
-	screen = Screen(200, 200, loop, drawLoop, title="Test window")
-	screen.start()
-	sound = Sound()
-	sound.audioSetup()
+	def __init__(self):
+		self.screen = Screen(200, 200, self.loop, self.drawLoop, title="Test window")
+		self.sound = Sound()
+		self.datCalc = DatCalc()
+		self.serial = Serial()
+		self.datCalc.dataConnect()
 
-	serial = SerialController()
-	serial.serialPorts()
-	datCalc.dataConnect()
+	def run(self):
+		"""
+		Start functions, initializes the screen
+		"""
 
-def loop():
-	"""
-	Main update loop, gets run as often as possible
-	"""
+		self.screen.start()
+		self.sound.audioSetup()
+
+		self.serial.serialPorts()
+
+	def loop(self):
+		"""
+		Main update loop, gets run as often as possible
+		"""
+		self.serial.serialPorts()
+
+	def drawLoop(self):
+		"""
+		Main draw loop, gets run at fixed interval (determined by framerate)
+		"""
+
+		self.screen.loop()
+		self.sound.mixer()
 
 
-def drawLoop():
-	"""
-	Main draw loop, gets run at fixed interval (determined by framerate)
-	"""
-
-	screen.loop()
-	sound.mixer()
-
+main = Main()
 
 if __name__ == '__main__':
 	print("Starting program")
-	run()
+	main.run()
