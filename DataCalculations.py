@@ -9,31 +9,35 @@ class DatCalc:
 
     def __init__(self):
         "Insert stuff"
+        self.dataConnect()
 
     def dataConnect(self):
         """
         This function will connect to the .csv file.
         """
+
         file = open('Planet Data.csv')
         type (file)
         csvreader = csv.reader(file)
-        self.header = []
-        self.header = next(csvreader)
         self.rows = []
         for row in csvreader:
             self.rows.append(row)
         file.close()
-        print(self.header)
-        print(self.rows[2])
-        '''
-        data = pd.read_csv("Planet Data.csv")
-        data.Mercury()
-        '''
+
+        for i in range(0, len(self.rows)):
+            pop = self.rows[i].pop(0)
+            self.rows[i] = pop.split(';')
+
+        self.dataRetrieve()
 
     def dataRetrieve(self):
         """
         This function will retrieve data from the .csv file.
         """
+        self.planet = "Mercury"
+        for i in range(0, len(self.rows)):
+            if self.planet in self.rows[i]:
+                print(self.rows[i])
 
     def survivalCalc(self):
         """
@@ -50,3 +54,5 @@ class DatCalc:
         This function calculates the properties of the gear from the astraut to pass to survivalcalc
         """
 
+
+connect = DatCalc()
