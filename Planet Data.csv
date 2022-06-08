@@ -1,11 +1,11 @@
-Planet;G-force;Toxic;Oxygen;Surface Temperature;Gas Giant
-Mercury;0378;No;No;167;No
-Venus;0908;Yes;No;464;No
-Earth;1000;No;Yes;15;No
-Moon (moon);0163;No;No;-20;No
-Mars;0378;Yes;No;-65;No
-Jupiter;2541;No;No;-110;Yes
-Saturn;1061;No;No;-140;Yes
-Uranus;0908;Yes;No;-195;Yes
-Neptune;1143;Yes;No;-200;Yes
-Pluto;0071;Yes;No;-225;No
+Planet;G-force;Toxic;Oxygen;Surface Temperature;Gas Giant;Toxic composition;Oxygen composition
+Mercury;0.378;No;No;167;No;0.0;0
+Venus;0.908;Yes;No;464;No;96.0;0
+Earth;1.000;No;Yes;15;No;0.0;21
+Moon (moon);0.163;No;No;-20;No;0.0;0
+Mars;0.378;Yes;No;-65;No;95.0.0;0
+Jupiter;2.541;No;No;-110;Yes;0.0;0
+Saturn;1.061;No;No;-140;Yes;0.0;0
+Uranus;0.908;Yes;No;-195;Yes;2.3;0
+Neptune;1.143;Yes;No;-200;Yes;1.0;0
+Pluto;0.071;Yes;No;-225;No;10.0;0
