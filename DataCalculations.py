@@ -11,7 +11,7 @@ class DatCalc:
         "Insert stuff"
 
         '''Determines the current planet'''
-        self.planet = "Mars"
+        self.planet = "none"
         '''Create empty gear variables'''
         self.boots = "none"
         self.legs = "none"
@@ -26,6 +26,7 @@ class DatCalc:
 
         '''Boolean to determine survival'''
         self.survivalBool = False
+        self.survival = []
 
         '''Intermediate for using data'''
         self.curData = []
@@ -84,12 +85,11 @@ class DatCalc:
         '''
 
         '''Calculates survivability and stores it in list'''
-        survival = []
-        survival.append(self.gravityCalc(float(self.curData[1])))
-        survival.append(self.toxicityCalc(self.curData[2]))
-        survival.append(self.oxygenCalc(self.curData[3]))
-        survival.append(self.temperatureCalc(int(self.curData[4])))
-        survival.append(self.gasGiantCalc(self.curData[5]))
+        self.survival.append(self.gravityCalc(float(self.curData[1])))
+        self.survival.append(self.toxicityCalc(self.curData[2]))
+        self.survival.append(self.oxygenCalc(self.curData[3]))
+        self.survival.append(self.temperatureCalc(int(self.curData[4])))
+        self.survival.append(self.gasGiantCalc(self.curData[5]))
 
         '''Prints survivability for testing purposes'''
         print(self.planet)
@@ -100,12 +100,15 @@ class DatCalc:
         print('gasgiant ' + str(self.gasGiantCalc(self.curData[5])))
 
         '''Determines total survival based on the calculations'''
-        if False in survival:
+        if False in self.survival:
             self.survivalBool = False
         else:
             self.survivalBool = True
 
         print('survival ' + str(self.survivalBool))
+
+    def returnSurvival(self):
+        return self.survival, self.survivalBool
 
     def gravityCalc(self, data):
         """
@@ -166,27 +169,62 @@ class DatCalc:
         else:
             return False
 
-    def gearScoreCalc(self):
+    def setBodyParts(self):
         """
-        This function calculates the properties of the gear from the astraut to pass to survivalcalc
+        Sets value of the bodyparts, based on what the user selected
         """
+        if Serial.astronautArray[0] == 1:
+            self.boots = "light"
+        elif Serial.astronautArray[1] == 1:
+            self.boots = "medium"
+        elif Serial.astronautArray[2] == 1:
+            self.boots = "heavy"
 
-        self.boots = "none"
+        if Serial.astronautArray[3] == 1:
+            self.legs = "rocket"
+        else:
+            self.boots = "none"
+
+        if Serial.astronautArray[4] == 1:
+            self.torso = "cool"
+        elif Serial.astronautArray[5] == 1:
+            self.torso = "none"
+        elif Serial.astronautArray[6] == 1:
+            self.torso = "hot"
+
+        if Serial.astronautArray[7] == 1:
+            self.helmet = "gas"
+        elif Serial.astronautArray[8] == 1:
+            self.helmet = "gasoxygen"
+        elif Serial.astronautArray[9] == 1:
+            self.helmet = "oxygen"
+        elif Serial.astronautArray[10] == 1:
+            self.helmet = "none"
+
+    def setPlanet(self):
         '''
-        heavy, light, none
+        Sets value of planet, based on what the user selected
         '''
-        self.legs = "rocket"
-        '''
-        rocket, none
-        '''
-        self.torso = "hot"
-        '''
-        cool, hot, none
-        '''
-        self.helmet = "oxygen"
-        '''
-        gas, gasoxygen, oxygen, none
-        '''
+        planetValue = empty #replace empty with a reference to serialcontroller to get the value from arduino
+
+        if planetValue == "R":
+            self.planet = "Mercury"
+        if planetValue == "V":
+            self.planet = "Venus"
+        if planetValue == "E":
+            self.planet = "Earth"
+        if planetValue == "M":
+            self.planet = "Moon"
+        if planetValue == "A":
+            self.planet = "Mars"
+        if planetValue == "J":
+            self.planet = "Jupiter"
+        if planetValue == "S":
+            self.planet = "Saturn"
+        if planetValue == "U":
+            self.planet = "Uranus"
+        if planetValue == "N":
+            self.planet = "Neptune"
 
     def planetScoreCalc(self):
         """

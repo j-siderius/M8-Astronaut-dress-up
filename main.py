@@ -38,7 +38,7 @@ class Main:
 		Main draw loop, gets run at fixed interval (determined by framerate)
 		"""
 
-		self.screen.loop()
+		# self.screen.loop()
 		self.sound.mixer()
 
 
