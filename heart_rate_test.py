@@ -1,10 +1,13 @@
-import neurokit2 as nk  # Load the package
+#import neurokit2 as nk  # Load the package
 import pygame
+import csv
+import numpy as np
 from pygame.locals import *
 import time
+alive = False
+dying = True
 
-
-def main():
+def main(true=None):
 	pygame.init()
 	pygame.font.init()
 
@@ -19,11 +22,43 @@ def main():
 
 	# change BPM here
 	bpm = 80
+	ecg = []
+	scale = 2
+	i = 1
 
-	if bpm > 2:
+	fileAlive = open('heart_beat.csv')
+	type(fileAlive)
+	fileDying = open('heart_beat_Dying.csv')
+	type(fileDying)
+	if alive == True:
+		file = fileAlive
+
+	if dying == True:
+		file = fileDying
+
+	csvreader = csv.reader(file)
+	rows = []
+	for row in csvreader:
+		rows.append(row)
+	file.close()
+
+	if alive == True or dying == True:
 		# ECG min = ±-0.5 max = ±1.5 >> draw 0 at screen_height * 0.75
-		ecg = nk.ecg_simulate(duration=16, sampling_rate=100, heart_rate=bpm)
-		initialY = int(screen_height * 0.7)
+		#ecg = nk.ecg_simulate(duration=16, sampling_rate=100, heart_rate=bpm)
+		#initialY = int(screen_height * 0.7)
+		while i in range(len(rows)):
+			e = rows[i-1]
+			d = str(e[0])
+			q = d.split('e')
+			c = float(q[0]) * 10 ** (int(q[1]))
+			ecg.append(c/1000 * screen_width * scale)
+			i += 1
+			print(i)
+			#if i == 1600:
+			#	i = 1
+
+		initialY = int(screen_height * 0.5)
+
 	else:
 		# ded
 		ecg = [0.0] * screen_width
@@ -68,10 +103,12 @@ def main():
 					index = 0
 
 			# go through all x-positions
-			for i in range(posX):
+			for i in range(posX + 1):
 				# calculate the corresponding y-positions
-				posY = initialY - (ecg[index + i] * 100)
-				posY2 = initialY - (ecg[index + i - 1] * 100)
+				posY = initialY - int((ecg[index + i] * 100))
+				posY2 = initialY - int((ecg[index + i - 1] * 100))
+
+				#print(posY)
 
 				# draw a line between the calculated points
 				pygame.draw.line(screen, GREEN, (i, posY), (i-1, posY2), 1)
