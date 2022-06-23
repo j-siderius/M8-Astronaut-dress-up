@@ -1,7 +1,5 @@
-#import neurokit2 as nk  # Load the package
 import pygame
 import csv
-import numpy as np
 from pygame.locals import *
 import time
 
@@ -10,13 +8,12 @@ iniDying = False
 
 iniX = 0
 situationIndex = 0
+nextSection = False
 
-def main(situationIndex, startX, true=None):
+def heartbeat(sitIn):
+	global nextSection
 	pygame.init()
 	pygame.font.init()
-
-	"""alive = alivebool
-	dying = dyingbool"""
 
 	# screen and variables
 	screen = pygame.display.set_mode((400, 200))
@@ -34,19 +31,7 @@ def main(situationIndex, startX, true=None):
 	i = 1
 	rounds = 0
 
-	file = open ('heart_beat_fullrange.csv')
-
-	""" fileAlive = open('heart_beat.csv')
-	type(fileAlive)
-	fileDying = open('heart_beat_Dying.csv')
-	type(fileDying)
-
-	if alive == True:
-		file = fileAlive
-
-	if dying == True:
-		file = fileDying
-	"""
+	file = open('heart_beat_fullrange.csv')
 
 	csvreader = csv.reader(file)
 	rows = []
@@ -54,10 +39,6 @@ def main(situationIndex, startX, true=None):
 		rows.append(row)
 	file.close()
 
-	#if alive == True or dying == True:
-		# ECG min = ±-0.5 max = ±1.5 >> draw 0 at screen_height * 0.75
-		#ecg = nk.ecg_simulate(duration=16, sampling_rate=100, heart_rate=bpm)
-		#initialY = int(screen_height * 0.7)
 	for i in range(len(rows)):
 		e = rows[i-1]
 		d = str(e[0])
@@ -65,19 +46,14 @@ def main(situationIndex, startX, true=None):
 		c = float(q[0]) * 10 ** (int(q[1]))
 		ecg.append(c/1000 * screen_width * scale)
 		i += 1
-		print(i)
+		#print(i)
 
 	initialY = int(screen_height * 0.5)
 
-	"""else:
-		# ded
-		ecg = [0.0] * screen_width
-		initialY = int(screen_height * 0.5)
-	"""
-
 	# graphing variables
-	posX = startX
-	index = situationIndex
+	posX = 0
+	index = sitIn
+	situationIndex = sitIn
 
 	# loop variables
 	running = True
@@ -88,9 +64,8 @@ def main(situationIndex, startX, true=None):
 
 		for event in pygame.event.get():
 			if (event.type == KEYUP):
-				print ("key pressed")
-				running = False
-				main(400,posX)
+				print("key pressed")
+				nextSection = True
 			if event.type == pygame.QUIT:
 				running = False
 
@@ -111,15 +86,17 @@ def main(situationIndex, startX, true=None):
 				posX += 1
 			else:
 				posX = 0
-				# increase the index of the array
-				if index < len(ecg) - screen_width:
-					index += screen_width
-					print ("it's doing it!")
-					print (index)
-				if index >= 400:
-					# reset the index if end is reached (loop array)
-					index = 0
-					print ("second option")
+				# reset the index if end is reached (loop array)
+				index = situationIndex
+				print("second option")
+				if nextSection == True:
+					running = False
+					heartbeat(situationIndex+400)
+					nextSection = False
+
+
+
+
 
 			# go through all x-positions
 			for i in range(posX + 1):
@@ -142,4 +119,4 @@ def main(situationIndex, startX, true=None):
 
 
 if __name__ == '__main__':
-	main(situationIndex, iniX)
+	heartbeat(situationIndex)
