@@ -3,8 +3,9 @@ This class manages all the other classes in python and will handle the interacti
 """
 
 # from Screen import Screen
-# from Sound import Sound
+from Sound import Sound
 # from SerialController import Serial
+from heartBeat import Heartbeat
 from DataCalculations import DatCalc
 import pygame
 import time
@@ -13,10 +14,12 @@ import time
 class Main:
 
     def __init__(self):
+        self.heartBeatScreen = Heartbeat
         # self.screen = Screen(200, 200, self.loop, self.drawLoop, title="Test window")
-        # self.sound = Sound()
-        self.datCalc = DatCalc()
         # self.serial = Serial()
+        self.sound = Sound()
+        self.sound.audioSetup()
+        self.datCalc = DatCalc()
         self.datCalc.dataConnect()
         pygame.init()
         self.frameRate = 60
@@ -33,7 +36,6 @@ class Main:
         self.loop()
 
     # self.screen.start()
-    # self.sound.audioSetup()
 
     # self.serial.serialPorts()
 
@@ -55,13 +57,18 @@ class Main:
                 self.frameCount += 1
 
     def draw(self):
-        #print(self.frameCount)
+        """
+        Put all the functions that need to be called from the main in this method
+        """
+        self.sound.getFrameCount(self.frameCount)
+
         self.datCalc.dataRelevant()
         self.datCalc.survivalCalc()
 
         #print every second
         if self.frameCount % 60 == 0:
             print(self.datCalc.returnSurvival())
+            print(self.sound.launching())
 
     def get_pressed_keys(self):
         """

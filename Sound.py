@@ -11,8 +11,10 @@ class Sound:
     def __init__(self):
         "Insert stuff"
         pygame.mixer.init()
-        self.audioSetup()
+        pygame.mixer.set_num_channels(4)
+        self.launch = pygame.mixer.Channel(1)
         self.timer = 0
+        self.frameCount = 0
 
     def audioSetup(self):
         """
@@ -32,21 +34,22 @@ class Sound:
         """
         This function will handle the sounds and when they should be played
         """
-        self.launchSound.play()
-        time.sleep(5)
-        self.launchSound.stop()
-        time.sleep(2)
-        self.launchSound.play()
-        time.sleep(3)
-        self.spaceMusic.stop()
-        time.sleep(4)
 
-    def launchSound(self):
+    def launching(self):
+        if self.launch.get_busy():
+            self.countdownlaunchSound.stop()
+        self.launch.play(self.countdownlaunchSound)
 
+    def getFrameCount(self, frameCount):
+        self.frameCount = frameCount
 
-        '''
-            laser = Sound()
-
-            if __name__ == '__main__':
-                laser.mixer()
-        '''
+    '''    
+    def timeElapsed(self, time):
+        onlyOnce = True
+        prevTime = 0
+        if onlyOnce:
+            prevTime = self.frameCount
+            onlyOnce = False
+        if  self.frameCount == prevTime + time:
+            return True
+    '''
