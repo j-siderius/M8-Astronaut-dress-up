@@ -11,10 +11,11 @@ class Sound:
     def __init__(self):
         "Insert stuff"
         pygame.mixer.init()
-        pygame.mixer.set_num_channels(4)
+        pygame.mixer.set_num_channels(8)
         self.launch = pygame.mixer.Channel(1)
         self.beat = pygame.mixer.Channel(2)
         self.beatLong = pygame.mixer.Channel(3)
+        self.earthBackground = pygame.mixer.Channel(4)
         self.timer = 0
         self.frameCount = 0
 
@@ -49,15 +50,11 @@ class Sound:
 
     def heartBeatLong(self):
         self.heartbeeplongSound.play()
-        #self.beatLong.play(self.heartbeeplongSound)
 
-    '''    
-    def timeElapsed(self, time):
-        onlyOnce = True
-        prevTime = 0
-        if onlyOnce:
-            prevTime = self.frameCount
-            onlyOnce = False
-        if  self.frameCount == prevTime + time:
-            return True
-    '''
+    def backGroundEarth(self):
+        if not self.earthBackground.get_busy():
+            self.earthBackground.play(self.earthMusic)
+
+
+    def backGroundSpace(self):
+        pass

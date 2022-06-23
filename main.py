@@ -2,7 +2,6 @@
 This class manages all the other classes in python and will handle the interaction between classes
 """
 
-# from Screen import Screen
 from Sound import Sound
 # from SerialController import Serial
 from heartBeat import Heartbeat
@@ -16,8 +15,6 @@ class Main:
         self.heartBeatScreen = Heartbeat()
         self.heartBeatScreen.readHeartrateVolt()
         self.heartBeatScreen.translateRows()
-        # self.screen = Screen(200, 200, self.loop, self.drawLoop, title="Test window")
-        # self.serial = Serial()
         self.sound = Sound()
         self.sound.audioSetup()
         self.datCalc = DatCalc()
@@ -36,8 +33,6 @@ class Main:
         """
         self.runBool = True
         self.loop()
-
-    # self.screen.start()
 
     # self.serial.serialPorts()
 
@@ -63,35 +58,28 @@ class Main:
         Put all the functions that need to be called from the main in this method
         """
 
-        #self.sound.getFrameCount(self.frameCount)
-        self.heartBeatScreen.display()
-
         self.datCalc.dataRelevant()
         self.datCalc.survivalCalc()
-        self.heartBeatScreen.readHeartrateVolt()
-        self.heartBeatScreen.translateRows()
         self.heartBeatScreen.display()
+
+        self.sound.backGroundEarth()
 
         #runs every second
         if self.frameCount % 60 == 0:
             print(self.datCalc.returnSurvival())
 
-        '''
-        if self.heartBeatScreen.detectPeak:
-            self.sound.heartBeat()
-        '''
         #state safe
         if self.heartBeatScreen.detectPeak() < 10:
             self.sound.heartBeat()
         #state danger
-        if self.frameCount > 60:
+        if self.frameCount > 220:
             self.heartBeatScreen.changeSpeed(0.5)
         #state dead
-        if self.frameCount > 300:
+        if self.frameCount > 500:
             self.heartBeatScreen.changeSpeed(0)
             if self.playDeadOnce:
                 self.sound.heartBeatLong()
-                playDeadOnce = False
+                self.playDeadOnce = False
 
 
     def get_pressed_keys(self):

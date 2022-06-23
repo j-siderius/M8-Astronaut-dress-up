@@ -6,8 +6,6 @@ import time
 class Heartbeat:
 
 	def __init__(self):
-
-		#self.nextSection
 		pygame.init()
 		pygame.font.init()
 
@@ -20,12 +18,9 @@ class Heartbeat:
 		self.BLACK = (0, 0, 0)
 		self.GREEN = (100, 255, 0)
 
-		# change BPM here
-		self.bpm = 80
+		self.rows = []
 		self.ecg = []
 		self.scale = 2
-		i = 1
-		rounds = 0
 		self.readHeartrateVolt()
 		self.translateRows()
 
@@ -34,8 +29,6 @@ class Heartbeat:
 		# graphing variables
 		self.posX = 0
 		self.currentFrame = []
-		#self.index = sitIn
-		#self.situationIndex = sitIn
 
 		# loop variables
 		self.running = True
@@ -47,7 +40,6 @@ class Heartbeat:
 	def readHeartrateVolt(self):
 		file = open('heart_rate_fullrange.csv')
 		csvreader = csv.reader(file)
-		self.rows = []
 		for row in csvreader:
 			self.rows.append(row)
 		file.close()
@@ -65,9 +57,9 @@ class Heartbeat:
 			self.screen.fill(self.BLACK)
 
 			# put string with BPM on screen
-			bpm_string = "BPM: " + str(self.bpm)
-			bpm_text = self.font.render(bpm_string, False, self.WHITE)
-			self.screen.blit(bpm_text, (5, 5))
+			#bpm_string = "BPM: " + str(self.speed*80)
+			#bpm_text = self.font.render(bpm_string, False, self.WHITE)
+			#self.screen.blit(bpm_text, (5, 5))
 
 			# increase the x-position every frame
 			if self.posX < self.screen_width:
@@ -85,8 +77,6 @@ class Heartbeat:
 				if i == self.posX - 1:
 					pygame.draw.circle(self.screen, self.GREEN, (i, self.currentFrame[i]), 2)
 
-			print(self.currentFrame[self.posX-1])
-
 			pygame.display.update()
 
 	def detectPeak(self):
@@ -94,5 +84,3 @@ class Heartbeat:
 
 	def changeSpeed(self, speed):
 		self.speed = speed
-
-beat = Heartbeat()
