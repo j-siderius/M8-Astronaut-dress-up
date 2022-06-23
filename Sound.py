@@ -20,15 +20,15 @@ class Sound:
         """
         This function will setup the audio
         """
-        self.selectSound = pygame.mixer.Sound('Planet select.wav')
-        self.countdownlaunchSound = pygame.mixer.Sound('Countdown launch.wav')
-        self.buzzerSound = pygame.mixer.Sound('Buzzer.wav')
-        self.heartbeepSound = pygame.mixer.Sound('Heartbeep.wav')
-        self.heartbeeplongSound = pygame.mixer.Sound('Heartbeep long.wav')
-        self.noiseSound = pygame.mixer.Sound('Space Noise.wav')
+        self.selectSound = pygame.mixer.Sound('Sound/Planet select.wav')
+        self.countdownlaunchSound = pygame.mixer.Sound('Sound/Countdown launch.wav')
+        self.buzzerSound = pygame.mixer.Sound('Sound/Buzzer.wav')
+        self.heartbeepSound = pygame.mixer.Sound('Sound/Heartbeep.wav')
+        self.heartbeeplongSound = pygame.mixer.Sound('Sound/Heartbeep long.wav')
+        self.noiseSound = pygame.mixer.Sound('Sound/Space Noise.wav')
 
-        self.spaceMusic = pygame.mixer.Sound('Space music.mp3')
-        self.earthMusic = pygame.mixer.Sound('Earth music.mp3')
+        self.spaceMusic = pygame.mixer.Sound('Sound/Space music.mp3')
+        self.earthMusic = pygame.mixer.Sound('Sound/Earth music.mp3')
 
     def mixer(self):
         """
