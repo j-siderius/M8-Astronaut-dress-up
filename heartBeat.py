@@ -3,14 +3,6 @@ import csv
 from pygame.locals import *
 import time
 
-iniAlive = True
-iniDying = False
-
-iniX = 0
-nextSection = False
-
-#def heartbeat(sitIn):
-
 class Heartbeat:
 
 	def __init__(self):
@@ -49,6 +41,7 @@ class Heartbeat:
 		self.previous_time = 0
 
 		self.state = 0
+		self.speed = 1
 
 	def readHeartrateVolt(self):
 		file = open('heart_rate_fullrange.csv')
@@ -89,8 +82,8 @@ class Heartbeat:
 			# go through all x-positions
 			for i in range(self.posX + 1):
 				# calculate the corresponding y-positions
-				posY = self.initialY - int((self.ecg[self.state + i] * 100))
-				posY2 = self.initialY - int((self.ecg[self.state + i - 1] * 100))
+				posY = self.initialY - int((self.ecg[int((self.state + i) * self.speed)] * 100))
+				posY2 = self.initialY - int((self.ecg[int((self.state + i - 1) * self.speed)] * 100))
 
 				#print(posY)
 
