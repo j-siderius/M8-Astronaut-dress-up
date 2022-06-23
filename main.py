@@ -5,7 +5,7 @@ This class manages all the other classes in python and will handle the interacti
 # from Screen import Screen
 # from Sound import Sound
 # from SerialController import Serial
-# from DataCalculations import DatCalc
+from DataCalculations import DatCalc
 import pygame
 import time
 
@@ -15,9 +15,9 @@ class Main:
     def __init__(self):
         # self.screen = Screen(200, 200, self.loop, self.drawLoop, title="Test window")
         # self.sound = Sound()
-        # self.datCalc = DatCalc()
+        self.datCalc = DatCalc()
         # self.serial = Serial()
-        # self.datCalc.dataConnect()
+        self.datCalc.dataConnect()
         pygame.init()
         self.frameRate = 60
         self.previous_time = time.perf_counter()
@@ -55,15 +55,13 @@ class Main:
                 self.frameCount += 1
 
     def draw(self):
-        print(self.frameCount)
+        #print(self.frameCount)
+        self.datCalc.dataRelevant()
+        self.datCalc.survivalCalc()
 
-    def drawLoop(self):
-        """
-        Main draw loop, gets run at fixed interval (determined by framerate)
-        """
-
-        # self.screen.loop()
-        self.sound.mixer()
+        #print every second
+        if self.frameCount % 60 == 0:
+            print(self.datCalc.returnSurvival())
 
     def get_pressed_keys(self):
         """

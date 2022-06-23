@@ -11,7 +11,7 @@ class DatCalc:
         "Insert stuff"
 
         '''Determines the current planet'''
-        self.planet = "none"
+        self.planet = "Earth"
         '''Create empty gear variables'''
         self.boots = "none"
         self.legs = "none"
@@ -39,11 +39,11 @@ class DatCalc:
         self.gasGiant = "No"
 
         '''Calls functions for testing'''
-        self.gearScoreCalc()
-        self.dataConnect()
-        self.dataRelevant()
-        self.survivalCalc()
-        self.planetScoreCalc()
+        #self.setBodyParts()
+        #self.dataConnect()
+        #self.dataRelevant()
+        #self.survivalCalc()
+        #self.planetScoreCalc()
 
     def dataConnect(self):
         """
@@ -57,11 +57,12 @@ class DatCalc:
         for row in csvreader:
             self.rows.append(row)
         file.close()
-
         '''Split list so that variables can be used'''
         for i in range(0, len(self.rows)):
-            pop = self.rows[i].pop(0)
-            self.rows[i] = pop.split(';')
+            pop = []
+            for j in range(0, len(self.rows[i])):
+                pop.append(self.rows[i][j])
+            self.rows[i] = pop
 
     def dataRelevant(self):
         """
@@ -83,7 +84,7 @@ class DatCalc:
         Surface Temperature = 4
         Gas Giant = 5
         '''
-
+        self.survival.clear()
         '''Calculates survivability and stores it in list'''
         self.survival.append(self.gravityCalc(float(self.curData[1])))
         self.survival.append(self.toxicityCalc(self.curData[2]))
@@ -91,21 +92,11 @@ class DatCalc:
         self.survival.append(self.temperatureCalc(int(self.curData[4])))
         self.survival.append(self.gasGiantCalc(self.curData[5]))
 
-        '''Prints survivability for testing purposes'''
-        print(self.planet)
-        print('gravity ' + str(self.gravityCalc(float(self.curData[1]))))
-        print('toxicity ' + str(self.toxicityCalc(self.curData[2])))
-        print('oxygen ' + str(self.oxygenCalc(self.curData[3])))
-        print('temperature ' + str(self.temperatureCalc(int(self.curData[4]))))
-        print('gasgiant ' + str(self.gasGiantCalc(self.curData[5])))
-
         '''Determines total survival based on the calculations'''
         if False in self.survival:
             self.survivalBool = False
         else:
             self.survivalBool = True
-
-        print('survival ' + str(self.survivalBool))
 
     def returnSurvival(self):
         return self.survival, self.survivalBool
@@ -205,7 +196,7 @@ class DatCalc:
         '''
         Sets value of planet, based on what the user selected
         '''
-        planetValue = empty #replace empty with a reference to serialcontroller to get the value from arduino
+        planetValue = empty#replace empty with a reference to serialcontroller to get the value from arduino
 
         if planetValue == "R":
             self.planet = "Mercury"
@@ -253,6 +244,3 @@ class DatCalc:
         print('oxygen ' + self.oxygen)
         print('temperature ' + self.temperature)
         print('gasgiant ' + self.gasGiant)
-
-
-connect = DatCalc()
