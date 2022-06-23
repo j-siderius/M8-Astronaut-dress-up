@@ -73,6 +73,9 @@ class Main:
             print(self.datCalc.returnSurvival())
             print(self.sound.launching())
 
+        if self.frameCount > 200:
+            self.heartBeatScreen.changeSpeed()
+
     def get_pressed_keys(self):
         """
         Function processes key presses and adds keys to an array you can check to see if a specific key is pressed

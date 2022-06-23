@@ -29,7 +29,7 @@ class Heartbeat:
 		self.GREEN = (100, 255, 0)
 
 		# change BPM here
-		self.bpm = 80
+		self.bpm = 200
 		self.ecg = []
 		self.scale = 2
 		i = 1
@@ -49,6 +49,7 @@ class Heartbeat:
 		self.previous_time = 0
 
 		self.state = 0
+		self.speed = 0
 
 	def readHeartrateVolt(self):
 		file = open('heart_rate_fullrange.csv')
@@ -78,9 +79,9 @@ class Heartbeat:
 			# increase the x-position every frame
 			if self.posX < self.screen_width:
 				self.posX += 1
+			else:
+				self.posX = 0
 			print(self.posX)
-			#else:
-				#self.posX = 0
 
 
 
@@ -89,8 +90,8 @@ class Heartbeat:
 			# go through all x-positions
 			for i in range(self.posX + 1):
 				# calculate the corresponding y-positions
-				posY = self.initialY - int((self.ecg[self.state + i] * 100))
-				posY2 = self.initialY - int((self.ecg[self.state + i - 1] * 100))
+				posY = self.initialY - int((self.ecg[int((self.state + i) * self.speed)] * 100))
+				posY2 = self.initialY - int((self.ecg[int((self.state + i - 1) * self.speed)] * 100))
 
 				#print(posY)
 
@@ -105,5 +106,7 @@ class Heartbeat:
 
 			pygame.display.update()
 
+	def changeSpeed(self):
+		self.speed = 0.5
 
 beat = Heartbeat()
