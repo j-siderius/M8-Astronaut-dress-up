@@ -98,5 +98,7 @@ class Heartbeat:
 
 			pygame.display.update()
 
+	def changeSpeed(self):
+		self.speed = 0.5
 
 beat = Heartbeat()
