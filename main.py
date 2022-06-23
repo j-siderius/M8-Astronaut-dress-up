@@ -81,7 +81,7 @@ class Main:
             self.sound.heartBeat()
         '''
         #state safe
-        if self.heartBeatScreen.detectPeak() < 25:
+        if self.heartBeatScreen.detectPeak() < 10:
             self.sound.heartBeat()
         #state danger
         if self.frameCount > 60:

@@ -48,7 +48,8 @@ class Sound:
         self.beat.play(self.heartbeepSound)
 
     def heartBeatLong(self):
-        self.beatLong.play(self.heartbeeplongSound)
+        self.heartbeeplongSound.play()
+        #self.beatLong.play(self.heartbeeplongSound)
 
     '''    
     def timeElapsed(self, time):
