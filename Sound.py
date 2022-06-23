@@ -16,8 +16,10 @@ class Sound:
         self.beat = pygame.mixer.Channel(2)
         self.beatLong = pygame.mixer.Channel(3)
         self.earthBackground = pygame.mixer.Channel(4)
+        self.planetBackground = pygame.mixer.Channel(5)
         self.timer = 0
         self.frameCount = 0
+        self.currentState = 0
 
     def audioSetup(self):
         """
@@ -39,9 +41,8 @@ class Sound:
         """
 
     def launching(self):
-        if self.launch.get_busy():
-            self.countdownlaunchSound.stop()
-        self.launch.play(self.countdownlaunchSound)
+        if not self.launch.get_busy():
+            self.launch.play(self.countdownlaunchSound)
 
     def heartBeat(self):
         if self.beat.get_busy():
@@ -55,6 +56,17 @@ class Sound:
         if not self.earthBackground.get_busy():
             self.earthBackground.play(self.earthMusic)
 
-
     def backGroundSpace(self):
-        pass
+        if not self.planetBackground.get_busy():
+            self.planetBackground.play(self.spaceMusic)
+
+    def stopSound(self, state):
+        if self.currentState != state:
+            self.currentState = state
+            self.earthBackground.stop()
+            self.planetBackground.stop()
+            self.launch.stop()
+            self.heartbeepSound.stop()
+
+
+
