@@ -3,8 +3,6 @@ import csv
 from pygame.locals import *
 import time
 
-nextSection = False
-
 class Heartbeat:
 
 	def __init__(self):
@@ -76,7 +74,6 @@ class Heartbeat:
 
 			else:
 				self.posX = 0
-				self.
 
 
 
