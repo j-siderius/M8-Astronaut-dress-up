@@ -10,7 +10,6 @@ from DataCalculations import DatCalc
 import pygame
 import time
 
-
 class Main:
 
     def __init__(self):
@@ -67,6 +66,10 @@ class Main:
 
         self.datCalc.dataRelevant()
         self.datCalc.survivalCalc()
+        self.heartBeatScreen.readHeartrateVolt()
+        self.heartBeatScreen.translateRows()
+        self.heartBeatScreen.display()
+        print (self.frameCount)
 
         #print every second
         if self.frameCount % 60 == 0:

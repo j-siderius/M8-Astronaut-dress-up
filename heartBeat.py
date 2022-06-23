@@ -3,13 +3,7 @@ import csv
 from pygame.locals import *
 import time
 
-iniAlive = True
-iniDying = False
-
-iniX = 0
 nextSection = False
-
-#def heartbeat(sitIn):
 
 class Heartbeat:
 
@@ -78,9 +72,13 @@ class Heartbeat:
 			# increase the x-position every frame
 			if self.posX < self.screen_width:
 				self.posX += 1
-			print(self.posX)
-			#else:
-				#self.posX = 0
+			#print(self.posX)
+
+			else:
+				self.posX = 0
+				self.
+
+
 
 
 
