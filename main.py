@@ -14,7 +14,9 @@ import time
 class Main:
 
     def __init__(self):
-        self.heartBeatScreen = Heartbeat
+        self.heartBeatScreen = Heartbeat()
+        self.heartBeatScreen.readHeartrateVolt()
+        self.heartBeatScreen.translateRows()
         # self.screen = Screen(200, 200, self.loop, self.drawLoop, title="Test window")
         # self.serial = Serial()
         self.sound = Sound()
@@ -61,6 +63,7 @@ class Main:
         Put all the functions that need to be called from the main in this method
         """
         self.sound.getFrameCount(self.frameCount)
+        self.heartBeatScreen.display()
 
         self.datCalc.dataRelevant()
         self.datCalc.survivalCalc()
