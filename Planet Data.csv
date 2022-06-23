@@ -1,10 +1,10 @@
-Planet,G-force,Toxic,Oxygen,Surface Temperature,Gas Giant,Oxygen composition,CO2,N2,O2,CH4,H2,He,Surface pressure
-Mercury,0.378,No,No,167,No,0,0,0,42,0,22,6,0
-Venus,0.908,Yes,No,464,No,0,96,4,0,0,0,0,92
-Earth,1.000,No,Yes,15,No,21,0,78,21,0,0,0,1
-Moon,0.163,No,No,-20,No,0,0,0,0,0,0,29,0
-Mars,0.378,Yes,No,-65,No,0,95,3,0,0,0,0,0.01
-Jupiter,2.541,No,No,-110,Yes,0,0,0,0,0,90,10,10
-Saturn,1.061,No,No,-140,Yes,0,0,0,0,0,96,3,1.4
-Uranus,0.908,Yes,No,-195,Yes,0,0,0,0,2,83,15,1000
-Neptune,1.143,Yes,No,-200,Yes,0,0,0,0,1,80,19,2.5
+Planet,G-force,Toxic,Oxygen,Surface Temperature,Gas Giant,Oxygen composition,CO2,N2,O2,CH4,H2,He,Surface pressure,Distance
+Mercury,0.378,No,No,167,No,0,0,0,42,0,22,6,0,58
+Venus,0.908,Yes,No,464,No,0,96,4,0,0,0,0,92,108
+Earth,1.000,No,Yes,15,No,21,0,78,21,0,0,0,1,0
+Moon,0.163,No,No,-20,No,0,0,0,0,0,0,29,0,0.38
+Mars,0.378,Yes,No,-65,No,0,95,3,0,0,0,0,0.01,228
+Jupiter,2.541,No,No,-110,Yes,0,0,0,0,0,90,10,10,779
+Saturn,1.061,No,No,-140,Yes,0,0,0,0,0,96,3,1.4,1432
+Uranus,0.908,Yes,No,-195,Yes,0,0,0,0,2,83,15,1000,2867
+Neptune,1.143,Yes,No,-200,Yes,0,0,0,0,1,80,19,2.5,4515
