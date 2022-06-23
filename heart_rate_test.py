@@ -1,10 +1,13 @@
-import neurokit2 as nk  # Load the package
 import pygame
+import csv
 from pygame.locals import *
 import time
 
+situationIndex = 0
+nextSection = False
 
-def main():
+def heartbeat(sitIn):
+	global nextSection
 	pygame.init()
 	pygame.font.init()
 
@@ -19,19 +22,34 @@ def main():
 
 	# change BPM here
 	bpm = 80
+	ecg = []
+	scale = 2
+	i = 1
+	rounds = 0
 
-	if bpm > 2:
-		# ECG min = ±-0.5 max = ±1.5 >> draw 0 at screen_height * 0.75
-		ecg = nk.ecg_simulate(duration=16, sampling_rate=100, heart_rate=bpm)
-		initialY = int(screen_height * 0.7)
-	else:
-		# ded
-		ecg = [0.0] * screen_width
-		initialY = int(screen_height * 0.5)
+	file = open('heart_beat_fullrange.csv')
+
+	csvreader = csv.reader(file)
+	rows = []
+	for row in csvreader:
+		rows.append(row)
+	file.close()
+
+	for i in range(len(rows)):
+		e = rows[i-1]
+		d = str(e[0])
+		q = d.split('e')
+		c = float(q[0]) * 10 ** (int(q[1]))
+		ecg.append(c/1000 * screen_width * scale)
+		i += 1
+		#print(i)
+
+	initialY = int(screen_height * 0.5)
 
 	# graphing variables
 	posX = 0
-	index = 0
+	index = sitIn
+	situationIndex = sitIn
 
 	# loop variables
 	running = True
@@ -39,7 +57,11 @@ def main():
 
 	while running:
 		# handle events
+
 		for event in pygame.event.get():
+			if (event.type == KEYUP):
+				print("key pressed")
+				nextSection = True
 			if event.type == pygame.QUIT:
 				running = False
 
@@ -60,18 +82,25 @@ def main():
 				posX += 1
 			else:
 				posX = 0
-				# increase the index of the array
-				if index < len(ecg) - screen_width:
-					index += screen_width
-				else:
-					# reset the index if end is reached (loop array)
-					index = 0
+				# reset the index if end is reached (loop array)
+				index = situationIndex
+				print("second option")
+				if nextSection == True:
+					running = False
+					heartbeat(situationIndex+400)
+					nextSection = False
+
+
+
+
 
 			# go through all x-positions
-			for i in range(posX):
+			for i in range(posX + 1):
 				# calculate the corresponding y-positions
-				posY = initialY - (ecg[index + i] * 100)
-				posY2 = initialY - (ecg[index + i - 1] * 100)
+				posY = initialY - int((ecg[index + i] * 100))
+				posY2 = initialY - int((ecg[index + i - 1] * 100))
+
+				#print(posY)
 
 				# draw a line between the calculated points
 				pygame.draw.line(screen, GREEN, (i, posY), (i-1, posY2), 1)
@@ -84,6 +113,5 @@ def main():
 			pygame.display.update()
 
 
-
 if __name__ == '__main__':
-	main()
+	heartbeat(situationIndex)
