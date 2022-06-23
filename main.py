@@ -28,6 +28,7 @@ class Main:
         self.elapsed_time = 0
         self.frameCount = 0
         self.runBool = False
+        self.playDeadOnce = True
 
     def run(self):
         """
@@ -61,7 +62,8 @@ class Main:
         """
         Put all the functions that need to be called from the main in this method
         """
-        self.sound.getFrameCount(self.frameCount)
+
+        #self.sound.getFrameCount(self.frameCount)
         self.heartBeatScreen.display()
 
         self.datCalc.dataRelevant()
@@ -69,15 +71,28 @@ class Main:
         self.heartBeatScreen.readHeartrateVolt()
         self.heartBeatScreen.translateRows()
         self.heartBeatScreen.display()
-        print (self.frameCount)
 
-        #print every second
+        #runs every second
         if self.frameCount % 60 == 0:
             print(self.datCalc.returnSurvival())
-            print(self.sound.launching())
 
-        if self.frameCount > 200:
-            self.heartBeatScreen.changeSpeed()
+        '''
+        if self.heartBeatScreen.detectPeak:
+            self.sound.heartBeat()
+        '''
+        #state safe
+        if self.heartBeatScreen.detectPeak() < 25:
+            self.sound.heartBeat()
+        #state danger
+        if self.frameCount > 60:
+            self.heartBeatScreen.changeSpeed(0.5)
+        #state dead
+        if self.frameCount > 300:
+            self.heartBeatScreen.changeSpeed(0)
+            if self.playDeadOnce:
+                self.sound.heartBeatLong()
+                playDeadOnce = False
+
 
     def get_pressed_keys(self):
         """

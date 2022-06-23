@@ -13,6 +13,8 @@ class Sound:
         pygame.mixer.init()
         pygame.mixer.set_num_channels(4)
         self.launch = pygame.mixer.Channel(1)
+        self.beat = pygame.mixer.Channel(2)
+        self.beatLong = pygame.mixer.Channel(3)
         self.timer = 0
         self.frameCount = 0
 
@@ -40,8 +42,13 @@ class Sound:
             self.countdownlaunchSound.stop()
         self.launch.play(self.countdownlaunchSound)
 
-    def getFrameCount(self, frameCount):
-        self.frameCount = frameCount
+    def heartBeat(self):
+        if self.beat.get_busy():
+            self.heartbeepSound.stop()
+        self.beat.play(self.heartbeepSound)
+
+    def heartBeatLong(self):
+        self.beatLong.play(self.heartbeeplongSound)
 
     '''    
     def timeElapsed(self, time):

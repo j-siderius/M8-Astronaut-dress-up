@@ -33,6 +33,7 @@ class Heartbeat:
 
 		# graphing variables
 		self.posX = 0
+		self.currentFrame = []
 		#self.index = sitIn
 		#self.situationIndex = sitIn
 
@@ -73,32 +74,25 @@ class Heartbeat:
 				self.posX += 1
 			else:
 				self.posX = 0
-			print(self.posX)
+				self.currentFrame.clear()
+			self.currentFrame.append(self.initialY - int((self.ecg[int((self.state + self.posX) * self.speed)] * 100)))
 
-
-
-
-
-			# go through all x-positions
-			for i in range(self.posX + 1):
-				# calculate the corresponding y-positions
-				posY = self.initialY - int((self.ecg[int((self.state + i) * self.speed)] * 100))
-				posY2 = self.initialY - int((self.ecg[int((self.state + i - 1) * self.speed)] * 100))
-
-				#print(posY)
-
+			for i in range(len(self.currentFrame)):
 				# draw a line between the calculated points
-				pygame.draw.line(self.screen, self.GREEN, (i, posY), (i-1, posY2), 1)
+				pygame.draw.line(self.screen, self.GREEN, (i, self.currentFrame[i]), (i - 1, self.currentFrame[i - 1]), 1)
 
 				# draw a point at the head of the graph
-				if i == self.posX-1:
-					pygame.draw.circle(self.screen, self.GREEN, (i, posY), 2)
+				if i == self.posX - 1:
+					pygame.draw.circle(self.screen, self.GREEN, (i, self.currentFrame[i]), 2)
 
-			# update the actual screen
+			print(self.currentFrame[self.posX-1])
 
 			pygame.display.update()
 
-	def changeSpeed(self):
-		self.speed = 0.5
+	def detectPeak(self):
+		return self.currentFrame[self.posX - 1]
+
+	def changeSpeed(self, speed):
+		self.speed = speed
 
 beat = Heartbeat()
