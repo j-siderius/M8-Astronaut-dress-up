@@ -29,7 +29,7 @@ class Main:
         self.frameCount = 0
         self.runBool = False
         self.playDeadOnce = True
-        self.state = 0
+        self.state = "Idle"
 
     def run(self):
         """
@@ -61,34 +61,41 @@ class Main:
         """
         Put all the functions that need to be called from the main in this method
         """
+        '''
+        states:
+        Idle
+        Travel
+        Planet
+        Dead
+        '''
 
         self.serial.readSerial()
         self.serial.writeSerial()
 
         if self.frameCount > 200:
-            self.state = 1
+            self.state = "Travel"
 
         if self.frameCount > 500:
-            self.state = 2
+            self.state = "Planet"
 
-        if self.state == 0:
+        if self.state == "Idle":
             self.sound.stopSound(self.state)
             self.sound.backGroundEarth()
 
-        if self.state == 1:
+        if self.state == "Travel":
             self.sound.stopSound(self.state)
             self.sound.launching()
             self.datCalc.dataRelevant()
             self.datCalc.survivalCalc()
 
-        if self.state == 2:
+        if self.state == "Planet":
             self.sound.stopSound(self.state)
             self.sound.backGroundSpace()
             self.heartBeatScreen.display()
             if self.heartBeatScreen.detectPeak() < 20:
                 self.sound.heartBeat()
 
-        if self.state == 3:
+        if self.state == "Dead":
             self.sound.stopSound(self.state)
             self.sound.heartBeatLong()
 
