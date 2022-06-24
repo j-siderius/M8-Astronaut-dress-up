@@ -3,15 +3,18 @@ This class manages all the other classes in python and will handle the interacti
 """
 
 from Sound import Sound
-# from SerialController import Serial
+from SerialController import Serial
 from heartBeat import Heartbeat
 from DataCalculations import DatCalc
 import pygame
 import time
 
+
 class Main:
 
     def __init__(self):
+        self.serial = Serial()
+        self.serial.getSerialPort()
         self.heartBeatScreen = Heartbeat()
         self.heartBeatScreen.readHeartrateVolt()
         self.heartBeatScreen.translateRows()
@@ -58,6 +61,9 @@ class Main:
         """
         Put all the functions that need to be called from the main in this method
         """
+
+        self.serial.readSerial()
+        self.serial.writeSerial()
 
         if self.frameCount > 200:
             self.state = 1
