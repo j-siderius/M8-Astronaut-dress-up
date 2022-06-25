@@ -64,13 +64,17 @@ class DatCalc:
                 pop.append(self.rows[i][j])
             self.rows[i] = pop
 
-    def dataRelevant(self):
+    def dataRelevant(self, planet):
         """
         This function will determine which data is relevant.
         """
+
+        self.planet = planet
+
         for i in range(0, len(self.rows)):
             if self.planet in self.rows[i]:
                 self.curData = self.rows[i]
+        print(self.curData)
 
     def survivalCalc(self):
         """
@@ -244,3 +248,6 @@ class DatCalc:
         print('oxygen ' + self.oxygen)
         print('temperature ' + self.temperature)
         print('gasgiant ' + self.gasGiant)
+
+    def returnDist(self):
+        return self.curData[12]

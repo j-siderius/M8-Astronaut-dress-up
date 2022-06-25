@@ -8,13 +8,13 @@ from heartBeat import Heartbeat
 from DataCalculations import DatCalc
 import pygame
 import time
+import math
 
 
 class Main:
 
     def __init__(self):
-        self.serial = Serial()
-        self.serial.getSerialPort()
+        #self.serial = Serial()
         self.heartBeatScreen = Heartbeat()
         self.heartBeatScreen.readHeartrateVolt()
         self.heartBeatScreen.translateRows()
@@ -29,7 +29,14 @@ class Main:
         self.frameCount = 0
         self.runBool = False
         self.playDeadOnce = True
-        self.state = "Idle"
+        self.state = "0"
+        self.planet = "Earth"
+        self.prevPlanet = "Earth"
+        self.launched = False
+
+        #For def delay
+        self.prevTimer = 0
+        self.delayBool = True
 
     def run(self):
         """
@@ -69,40 +76,103 @@ class Main:
         Dead
         '''
 
-        self.serial.readSerial()
-        self.serial.writeSerial()
+        #self.serial.readSerial()
+        #self.serial.writeSerial()
 
-        if self.frameCount > 200:
-            self.state = "Travel"
+        self.testAnimator()
 
-        if self.frameCount > 500:
-            self.state = "Planet"
+        #If the user has pressed the big red button
+        if self.launched:
+            self.state = "1"
 
-        if self.state == "Idle":
-            self.sound.stopSound(self.state)
-            self.sound.backGroundEarth()
+        #Earth state
+        if self.state == "0":
+            self.earthState()
 
-        if self.state == "Travel":
-            self.sound.stopSound(self.state)
-            self.sound.launching()
-            self.datCalc.dataRelevant()
-            self.datCalc.survivalCalc()
+        #Launch state
+        if self.state == "2":
+            self.launchState()
 
-        if self.state == "Planet":
-            self.sound.stopSound(self.state)
-            self.sound.backGroundSpace()
-            self.heartBeatScreen.display()
-            if self.heartBeatScreen.detectPeak() < 20:
-                self.sound.heartBeat()
+        #Travel state
+        if self.state == "1":
+            self.travelState()
 
-        if self.state == "Dead":
-            self.sound.stopSound(self.state)
-            self.sound.heartBeatLong()
+        #Planet state
+        if self.state == "3":
+            self.planetState()
+
+        #Death state
+        if self.state == "4":
+            self.deathState()
+
+        self.sound.stopSound(self.state)
 
         #runs every second
         if self.frameCount % 60 == 0:
-            print(self.datCalc.returnSurvival())
+            pass#print(self.datCalc.returnSurvival())
 
+    #when the user is still on earth selecting planets
+    def earthState(self):
+        self.sound.reset()
+        self.sound.backGroundEarth()
+        if self.prevPlanet != self.planet:
+            self.prevPlanet = self.planet
+            self.sound.selectPlanet()
+            self.datCalc.dataRelevant(self.planet)
+
+    #when the user pressed the button
+    def launchState(self):
+        self.sound.buzzer()
+
+        if self.delay(90):
+            self.sound.launching()
+        self.datCalc.survivalCalc()
+
+        if self.frameCount > 700:
+            self.state = 2
+
+        #if self.delay(400):
+        #    self.state = 3
+
+    #when the rocket is traveling through space
+    def travelState(self):
+        self.sound.travel()
+        travelDelay = math.sqrt(float(self.datCalc.returnDist()))*10*self.frameRate
+        print(travelDelay)
+        if self.delay(travelDelay):
+            self.state = 3
+
+    #when the rocket reached the destination planet
+    def planetState(self):
+        self.sound.backGroundSpace()
+        self.sound.backGroundNoise()
+        self.heartBeatScreen.display()
+        if self.heartBeatScreen.detectPeak() < 18:
+            self.sound.heartBeat()
+
+    #when the astronaut dies
+    def deathState(self):
+        self.sound.heartBeatLong()
+
+    def testAnimator(self):
+        if self.frameCount > 200:
+            self.planet = "Jupiter"
+
+        if self.frameCount > 300:
+            self.planet = "Neptune"
+
+        if self.frameCount > 400:
+            self.launched = True
+
+    # A simple delay check method
+    def delay(self, delay):
+        if self.delayBool:
+            self.delayBool = False
+            self.prevTimer = self.frameCount
+            return False
+        if self.prevTimer + delay == self.frameCount:
+            self.delayBool = True
+            return True
 
     def get_pressed_keys(self):
         """
