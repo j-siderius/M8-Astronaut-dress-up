@@ -35,6 +35,7 @@ class Main:
         self.launched = False
         self.landed = False
         self.travelDuration = 10
+        self.survival = False
 
         #For def delay
         self.prevTimer = 0
@@ -86,7 +87,7 @@ class Main:
         #If the user has pressed the big red button
         if self.launched:
             self.launched = False
-            self.state = 1
+            self.state = 3
 
         #Earth state
         if self.state == 0:
@@ -141,28 +142,32 @@ class Main:
 
     #when the rocket reached the destination planet
     def planetState(self):
+        self.datCalc.survivalCalc()
+        print(self.survival)
         self.sound.backGroundSpace()
         self.sound.backGroundNoise()
         self.heartBeatScreen.display()
+        survival = self.datCalc.returnSurvival()
+        if survival[1]:
+            self.survival = True
+        else:
+            self.survival = False
         if self.delay(200):
             self.landed = True
         if self.landed:
             if self.heartBeatScreen.detectPeak() < 18:
                 self.sound.heartBeat()
+        if not self.survival:
+            self.heartBeatScreen.speed *= 1.0005
+            if self.heartBeatScreen.speed > 2:
+                self.state = 4
+        elif self.survival:
+            self.heartBeatScreen.speed = 1
 
     #when the astronaut dies
     def deathState(self):
         self.sound.heartBeatLong()
-
-    def testAnimator(self):
-        if self.frameCount > 50:
-            self.planet = "Jupiter"
-
-        if self.frameCount > 100:
-            self.planet = "Mars"
-
-        if self.frameCount == 200:
-            self.launched = True
+        self.heartBeatScreen.speed = 0
 
     # A simple delay check method
     def delay(self, delay):
@@ -172,6 +177,16 @@ class Main:
         if self.prevTimer + delay == self.frameCount:
             self.delayBool = True
             return True
+
+    def testAnimator(self):
+        if self.frameCount > 50:
+            self.planet = "Jupiter"
+
+        if self.frameCount > 100:
+            self.planet = "Neptune"
+
+        if self.frameCount == 200:
+            self.launched = True
 
     def get_pressed_keys(self):
         """

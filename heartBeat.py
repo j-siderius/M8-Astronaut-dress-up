@@ -38,7 +38,7 @@ class Heartbeat:
 		self.speed = 1
 
 	def readHeartrateVolt(self):
-		file = open('heart_rate_fullrange.csv')
+		file = open('heart_rate_onecycle.csv')
 		csvreader = csv.reader(file)
 		for row in csvreader:
 			self.rows.append(row)
