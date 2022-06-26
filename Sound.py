@@ -15,7 +15,6 @@ class Sound:
         self.timer = 0
         self.frameCount = 0
         self.currentState = 0
-        self.buzzerBool = True
 
     def audioSetup(self):
         """
@@ -35,6 +34,7 @@ class Sound:
         self.noise = pygame.mixer.Channel(6)
         self.select = pygame.mixer.Channel(7)
         self.spaceTravel = pygame.mixer.Channel(8)
+        self.enterSpace = pygame.mixer.Channel(9)
 
         #Individual sounds
         self.selectSound = pygame.mixer.Sound('Sounds/Planet select.wav')
@@ -47,20 +47,24 @@ class Sound:
         self.spaceMusic = pygame.mixer.Sound('Sounds/Space music.mp3')
         self.earthMusic = pygame.mixer.Sound('Sounds/Earth music.mp3')
         self.travelSound = pygame.mixer.Sound('Sounds/TravelSound.wav')
+        self.buzLaunchSound = pygame.mixer.Sound('Sounds/Buzlaunch.wav')
+        self.doorSound = pygame.mixer.Sound('Sounds/Spaceship Door.wav')
 
     def selectPlanet(self):
         if self.select.get_busy():
             self.select.stop()
         self.select.play(self.selectSound)
 
+    '''
     def buzzer(self):
-        if not self.buttonPressed.get_busy() and self.buzzerBool:
+        #if not self.buttonPressed.get_busy() and self.buzzerBool:
             self.buttonPressed.play(self.buzzerSound)
-            self.buzzerBool = False
+            #self.buzzerBool = False
+    '''
 
     def launching(self):
         if not self.launch.get_busy():
-            self.launch.play(self.countdownlaunchSound)
+            self.launch.play(self.buzLaunchSound)
 
     def heartBeat(self):
         if self.beat.get_busy():
@@ -86,6 +90,11 @@ class Sound:
         if not self.spaceTravel.get_busy():
             self.spaceTravel.play(self.travelSound)
 
+    def landing(self):
+        self.spaceTravel.fadeout(2)
+        if not self.enterSpace.get_busy():
+            self.enterSpace.play(self.doorSound)
+
     def stopSound(self, state):
         """
         Stops all sounds from playing
@@ -100,7 +109,7 @@ class Sound:
             self.spaceTravel.stop()
 
     def reset(self):
-        self.buzzerBool = True
+        pass
 
 
 

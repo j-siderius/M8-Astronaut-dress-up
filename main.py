@@ -29,10 +29,12 @@ class Main:
         self.frameCount = 0
         self.runBool = False
         self.playDeadOnce = True
-        self.state = "0"
+        self.state = 0
         self.planet = "Earth"
         self.prevPlanet = "Earth"
         self.launched = False
+        self.landed = False
+        self.travelDuration = 10
 
         #For def delay
         self.prevTimer = 0
@@ -83,33 +85,35 @@ class Main:
 
         #If the user has pressed the big red button
         if self.launched:
-            self.state = "1"
+            self.launched = False
+            self.state = 1
 
         #Earth state
-        if self.state == "0":
+        if self.state == 0:
             self.earthState()
 
         #Launch state
-        if self.state == "2":
+        if self.state == 1:
             self.launchState()
 
         #Travel state
-        if self.state == "1":
+        if self.state == 2:
             self.travelState()
 
         #Planet state
-        if self.state == "3":
+        if self.state == 3:
             self.planetState()
 
         #Death state
-        if self.state == "4":
+        if self.state == 4:
             self.deathState()
 
         self.sound.stopSound(self.state)
 
         #runs every second
         if self.frameCount % 60 == 0:
-            pass#print(self.datCalc.returnSurvival())
+            pass
+            #print(self.datCalc.returnSurvival())
 
     #when the user is still on earth selecting planets
     def earthState(self):
@@ -122,24 +126,17 @@ class Main:
 
     #when the user pressed the button
     def launchState(self):
-        self.sound.buzzer()
+        self.sound.launching()
 
-        if self.delay(90):
-            self.sound.launching()
-        self.datCalc.survivalCalc()
-
-        if self.frameCount > 700:
+        if self.delay(1000):
             self.state = 2
-
-        #if self.delay(400):
-        #    self.state = 3
 
     #when the rocket is traveling through space
     def travelState(self):
         self.sound.travel()
-        travelDelay = math.sqrt(float(self.datCalc.returnDist()))*10*self.frameRate
-        print(travelDelay)
+        travelDelay = int((float(self.datCalc.returnDist())**0.25)*self.frameRate*self.travelDuration)
         if self.delay(travelDelay):
+            self.sound.landing()
             self.state = 3
 
     #when the rocket reached the destination planet
@@ -147,21 +144,24 @@ class Main:
         self.sound.backGroundSpace()
         self.sound.backGroundNoise()
         self.heartBeatScreen.display()
-        if self.heartBeatScreen.detectPeak() < 18:
-            self.sound.heartBeat()
+        if self.delay(200):
+            self.landed = True
+        if self.landed:
+            if self.heartBeatScreen.detectPeak() < 18:
+                self.sound.heartBeat()
 
     #when the astronaut dies
     def deathState(self):
         self.sound.heartBeatLong()
 
     def testAnimator(self):
-        if self.frameCount > 200:
+        if self.frameCount > 50:
             self.planet = "Jupiter"
 
-        if self.frameCount > 300:
-            self.planet = "Neptune"
+        if self.frameCount > 100:
+            self.planet = "Mars"
 
-        if self.frameCount > 400:
+        if self.frameCount == 200:
             self.launched = True
 
     # A simple delay check method
@@ -169,7 +169,6 @@ class Main:
         if self.delayBool:
             self.delayBool = False
             self.prevTimer = self.frameCount
-            return False
         if self.prevTimer + delay == self.frameCount:
             self.delayBool = True
             return True
