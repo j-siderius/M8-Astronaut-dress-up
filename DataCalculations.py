@@ -74,7 +74,6 @@ class DatCalc:
         for i in range(0, len(self.rows)):
             if self.planet in self.rows[i]:
                 self.curData = self.rows[i]
-        print(self.curData)
 
     def survivalCalc(self):
         """

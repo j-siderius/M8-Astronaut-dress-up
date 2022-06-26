@@ -9,11 +9,9 @@ import time
 class Sound:
 
     def __init__(self):
-        "Insert stuff"
+        """Insert stuff"""
 
-        #Stuff for other things
-        self.timer = 0
-        self.frameCount = 0
+        # For stopping the sounds
         self.currentState = 0
 
     def audioSetup(self):
@@ -22,7 +20,7 @@ class Sound:
         """
 
         pygame.mixer.init()
-        pygame.mixer.set_num_channels(10)
+        pygame.mixer.set_num_channels(11)
 
         # All the mixer channels
         self.buttonPressed = pygame.mixer.Channel(0)
@@ -35,20 +33,22 @@ class Sound:
         self.select = pygame.mixer.Channel(7)
         self.spaceTravel = pygame.mixer.Channel(8)
         self.enterSpace = pygame.mixer.Channel(9)
+        self.victory = pygame.mixer.Channel(10)
 
-        #Individual sounds
+        # Individual sounds
         self.selectSound = pygame.mixer.Sound('Sounds/Planet select.wav')
         self.countdownlaunchSound = pygame.mixer.Sound('Sounds/Countdown launch.wav')
         self.buzzerSound = pygame.mixer.Sound('Sounds/Buzzer.wav')
         self.heartbeepSound = pygame.mixer.Sound('Sounds/Heartbeep.wav')
         self.heartbeeplongSound = pygame.mixer.Sound('Sounds/Heartbeep long.wav')
         self.noiseSound = pygame.mixer.Sound('Sounds/Space Noise.wav')
-        #Background sounds
+        self.buzLaunchSound = pygame.mixer.Sound('Sounds/Buzlaunch.wav')
+        self.doorSound = pygame.mixer.Sound('Sounds/Spaceship Door.wav')
+        self.victorySound = pygame.mixer.Sound('Sounds/Victory sound.wav')
+        # Background sounds
         self.spaceMusic = pygame.mixer.Sound('Sounds/Space music.mp3')
         self.earthMusic = pygame.mixer.Sound('Sounds/Earth music.mp3')
         self.travelSound = pygame.mixer.Sound('Sounds/TravelSound.wav')
-        self.buzLaunchSound = pygame.mixer.Sound('Sounds/Buzlaunch.wav')
-        self.doorSound = pygame.mixer.Sound('Sounds/Spaceship Door.wav')
 
     def selectPlanet(self):
         if self.select.get_busy():
@@ -95,6 +95,10 @@ class Sound:
         if not self.enterSpace.get_busy():
             self.enterSpace.play(self.doorSound)
 
+    def survived(self):
+        if not self.victory.get_busy():
+            self.victory.play(self.victorySound)
+
     def stopSound(self, state):
         """
         Stops all sounds from playing
@@ -107,9 +111,8 @@ class Sound:
             self.heartbeepSound.stop()
             self.select.stop()
             self.spaceTravel.stop()
+            self.noise.stop()
+            self.heartbeeplongSound.stop()
 
     def reset(self):
         pass
-
-
-
