@@ -13,10 +13,16 @@ class Serial:
     def __init__(self, dataObj, port=None, baudrate=9600):
         """
         Initializes the serial object
+        :param dataObj: dataCalculation object (to pass variables)
         :param port: serial port that the controller is connected to
         :param baudrate: communication baud rate for talking to the serial device
         """
+
         self.dataObj = dataObj
+        self.waitingForConfirmation = False
+        self.sentMessageCheck = ""
+        self.messageBuffer = ""
+
         # if no port is specified, the program will automatically try to find and connect to a connected Arduino device
         if not port:
             device = self.getSerialPort()
@@ -55,9 +61,14 @@ class Serial:
         :param argument: the serial message to send
         """
 
-        # convert the argument to the proper encoding
-        arg = bytes(argument.encode())
-        self.port.write(arg)
+        if not self.waitingForConfirmation:
+            # send the message
+            # convert the argument to the proper encoding
+            arg = bytes(argument.encode())
+            self.port.write(arg)
+        else:
+            # still waiting for confirmation, wait with sending
+            self.messageBuffer = argument
 
     def readSerial(self):
         """
@@ -89,6 +100,12 @@ class Serial:
             # launch confirmation
             launchConfirm = message[1:2]
             Serial.print("launchConfirm", launchConfirm)
+        elif "C" in message:
+            # message received confirmation
+            if message[1] != self.sentMessageCheck:
+                print("Confirmation receipt error: Confirmation does not match the sent function!")
+            else:
+                self.waitingForConfirmation = False
         else:
             print("Serial message could not be decoded")
 
@@ -97,7 +114,7 @@ class Serial:
         Encodes serial message to send to arduino
         :param  function: which type of message to send
         :param  data: data to include in the send
-        """
+        """            
         if function == "planetData":
             # incoming data format:
             # ['Jupiter', '2.541', 'No', 'No', '-110', 'Yes', '0', '0', '0', '0', '90', '10', '10', '779']
@@ -165,4 +182,5 @@ class Serial:
         """
         This function will contain the queue for messages
         """
-        # TODO: implement queue system
+        if not self.waitingForConfirmation:
+            self.writeSerial(self.messageBuffer)
