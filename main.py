@@ -86,11 +86,7 @@ class Main:
         Dead
         '''
 
-        #self.getSetSerial()
-
         self.planet = self.datCalc.planet
-
-        self.testAnimator()
 
         # If the user has pressed the big red button
         if self.launched:
@@ -210,10 +206,6 @@ class Main:
         if self.prevTimer + delay == self.frameCount:
             self.delayBool = True
             return True
-
-    def getSetSerial(self):
-        userInput = self.serial.decode()
-        self.planet = userInput
 
     # A test animator, which automatically selects planets and presses launch button
     def testAnimator(self):

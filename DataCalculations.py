@@ -224,7 +224,7 @@ class DatCalc:
             self.planet = "Uranus"
         elif planetArray[7] == 1:
             self.planet = "Neptune"
-        elif 0 not in planetArray:
+        elif "0" not in planetArray:
             self.planet = "None"
 
     def planetScoreCalc(self):
