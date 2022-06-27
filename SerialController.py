@@ -100,7 +100,7 @@ class Serial:
         """
         if function == "planetData":
             # incomding data format:
-            #
+            # ['Jupiter', '2.541', 'No', 'No', '-110', 'Yes', '0', '0', '0', '0', '90', '10', '10', '779']
 
             # G-force|Toxic|Oxygen|SurfaceTemperature|GasGiant|CO2|N2|O2|CH4|H2|He|SurfacePressure|Distance
             #     F| T|  O|     K| G|  E|   |   |   |   |   |     P|      D

@@ -90,7 +90,7 @@ class Main:
 
         self.planet = self.datCalc.planet
 
-        #self.testAnimator()
+        self.testAnimator()
 
         # If the user has pressed the big red button
         if self.launched:
@@ -127,6 +127,7 @@ class Main:
             self.sound.stopSound()
 
         print(self.datCalc.getPlanetData())
+        #print(self.datCalc.getGranularData())
 
         # runs every second
         if self.frameCount % 60 == 0:
@@ -140,6 +141,7 @@ class Main:
             self.prevPlanet = self.planet
             self.sound.selectPlanet()
             self.datCalc.dataRelevant(self.planet)
+            self.datCalc.survivalCalc()
             self.serial.encoder("planetName", self.planet)
             self.serial.encoder("planetData", self.datCalc.curData)
         self.heartBeatScreen.display(self.state)
@@ -162,7 +164,6 @@ class Main:
 
     # when the rocket reached the destination planet
     def planetState(self):
-        self.datCalc.survivalCalc()
         self.sound.backGroundSpace()
         self.sound.backGroundNoise()
         self.serial.writeSerial()

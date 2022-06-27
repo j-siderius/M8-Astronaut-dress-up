@@ -37,13 +37,7 @@ class DatCalc:
         self.oxygen = 21
         self.temperature = 15
         self.gasGiant = "No"
-
-        '''Calls functions for testing'''
-        #self.setBodyParts()
-        #self.dataConnect()
-        #self.dataRelevant()
-        #self.survivalCalc()
-        #self.planetScoreCalc()
+        self.granular = []
 
     def dataConnect(self):
         """
@@ -87,6 +81,7 @@ class DatCalc:
         Surface Temperature = 4
         Gas Giant = 5
         '''
+        self.granular.clear()
         self.survival.clear()
         '''Calculates survivability and stores it in list'''
         self.survival.append(self.gravityCalc(float(self.curData[1])))
@@ -119,10 +114,13 @@ class DatCalc:
         Calculates the toxicity survivability
         """
         if data == "No":
+            self.granular.append(0)
             return True
-        elif self.helmet == "gas" or self.helmet == "gasoxygen":
+        elif self.helmet == "gas":
+            self.granular.append(0)
             return True
         else:
+            self.granular.append(1)
             return False
 
     def oxygenCalc(self, data):
@@ -130,10 +128,13 @@ class DatCalc:
         Calculates the oxygen survivability
         """
         if data == "Yes":
+            self.granular.append(1)
             return True
-        elif self.helmet == "oxygen" or self.helmet == "gasoxygen":
+        elif self.helmet == "oxygen" or self.helmet == "gas":
+            self.granular.append(1)
             return True
         else:
+            self.granular.append(0)
             return False
 
     def temperatureCalc(self, data):
@@ -141,12 +142,19 @@ class DatCalc:
         Calculates the temperature survivability
         """
         if self.temperatureLimitUpper > data > self.temperatureLimitLower and self.torso == "none":
+            self.granular.append(1)
             return True
         elif data > self.temperatureLimitUpper and self.torso == "cool":
+            self.granular.append(1)
             return True
         elif data < self.temperatureLimitLower and self.torso == "hot":
+            self.granular.append(1)
             return True
-        else:
+        elif data > self.temperatureLimitUpper and self.torso != "cool":
+            self.granular.append(2)
+            return False
+        elif data < self.temperatureLimitLower and self.torso != "hot":
+            self.granular.append(0)
             return False
 
     def gasGiantCalc(self, data):
@@ -154,10 +162,13 @@ class DatCalc:
         Calculates the gas giant survivability
         """
         if data == "No":
+            self.granular.append(0)
             return True
         elif self.legs == "rocket":
+            self.granular.append(0)
             return True
         else:
+            self.granular.append(1)
             return False
 
     def setBodyParts(self, astronautArray):
@@ -188,17 +199,14 @@ class DatCalc:
         if astronautArray[7] == 1:
             self.helmet = "gas"
         elif astronautArray[8] == 1:
-            self.helmet = "gasoxygen"
-        elif astronautArray[9] == 1:
             self.helmet = "oxygen"
-        elif astronautArray[10] == 1:
+        elif astronautArray[9] == 1:
             self.helmet = "none"
 
-
     def setPlanet(self, planetArray):
-        '''
+        """
         Sets value of planet, based on what the user selected
-        '''
+        """
 
         if planetArray[0] == 1:
             self.planet = "Mercury"
@@ -216,7 +224,6 @@ class DatCalc:
             self.planet = "Uranus"
         elif planetArray[7] == 1:
             self.planet = "Neptune"
-
 
     def planetScoreCalc(self):
         """
@@ -252,8 +259,17 @@ class DatCalc:
     def getPlanetData(self):
         return self.curData
 
+    def getGranularData(self):
+        """
+        Granular data: an array of 4 variables. Only used
+        first value = toxicity; 0 = no toxic, 1 = toxic
+        second value = oxygen; 0 = no oxygen, 1 = oxygen
+        third value = temperature; 0 = cold, 1 = normal, 2 is hot
+        fourth value = gas giant; 0 = no gas giant, 1 = gas giant
+        """
+        return self.granular
+
     def returnDist(self):
         return self.curData[12]
 
-
-    #TODO: make a function for the granular data (aka the output data changes after launching the astronaut)
+    # TODO: make a function for the granular data (aka the output data changes after launching the astronaut)
