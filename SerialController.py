@@ -100,6 +100,7 @@ class Serial:
         :param  data: data to include in the send
         """
         if function == "planetData":
+            # TODO: encode proper data
             if data is not None:
                 msg = 'D' + data
                 self.writeSerial(msg)
