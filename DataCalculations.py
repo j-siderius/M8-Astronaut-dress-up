@@ -229,34 +229,6 @@ class DatCalc:
         elif "1" not in planetArray:
             self.planet = "Earth"
 
-    def planetScoreCalc(self):
-        """
-        This function calculates the values for physicalizing the planet data and passing to survivalcalc
-        """
-
-        '''
-        Gravity = 1
-        Toxic = 6
-        Oxygen = 7
-        Surface Temperature = 4
-        Gas Giant = 5
-        '''
-
-        '''Puts data in the variables'''
-        self.gravity = self.curData[1]
-        self.toxic = self.curData[6]
-        self.oxygen = self.curData[7]
-        self.temperature = self.curData[4]
-        self.gasGiant = self.curData[5]
-
-        print('')
-        print('Accurate data:')
-        print('gravity ' + self.gravity)
-        print('toxicity ' + self.toxic)
-        print('oxygen ' + self.oxygen)
-        print('temperature ' + self.temperature)
-        print('gasgiant ' + self.gasGiant)
-
     def getSurvival(self):
         return self.survival, self.survivalBool
 

@@ -136,7 +136,6 @@ class Main:
             self.sound.selectPlanet()
             self.datCalc.dataRelevant()
             self.datCalc.survivalCalc()
-            print(self.datCalc.survival)
             self.serial.encoder("planetName", self.planet)
             self.serial.encoder("planetData", self.datCalc.curData)
         self.heartBeatScreen.display(self.state)
@@ -148,6 +147,9 @@ class Main:
         self.sound.launching()
 
         if self.delay(1000):
+            granular = self.datCalc.granular
+            print(granular)
+            self.serial.encoder("astronautSurvival", granular)
             self.state = 2
 
     # when the rocket is traveling through space
