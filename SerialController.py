@@ -80,7 +80,7 @@ class Serial:
             # read all available from the serial port and print to serial
             buffer = self.port.readline().decode()
             self.decode(buffer)
-            print(buffer)
+            #print(buffer)
             time.sleep(0.001)
 
     def decode(self, message):
