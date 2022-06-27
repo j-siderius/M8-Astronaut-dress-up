@@ -9,6 +9,7 @@ from DataCalculations import DatCalc
 import pygame
 import time
 import math
+import sys
 
 
 class Main:
@@ -63,6 +64,7 @@ class Main:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or pygame.K_ESCAPE in self.get_pressed_keys():
                     self.runBool = False
+                    sys.exit()
 
             # timing functions for constant fps
             self.elapsed_time = time.perf_counter() - self.previous_time

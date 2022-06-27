@@ -28,7 +28,6 @@ class Serial:
         # build a thread for the serial receiving function
         serialThread = threading.Thread(target=self.readSerial)
         serialThread.start()
-        serialThread.join()
 
     def getSerialPort(self):
         """
