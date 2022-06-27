@@ -26,6 +26,9 @@ class Serial:
         self.messageBuffer = []
         self.previous_time = time.perf_counter()
 
+        # to check whether the button has been pressed
+        self.launched = False
+
         # if no port is specified, the program will automatically try to find and connect to a connected Arduino device
         if not port:
             device = self.getSerialPort()
@@ -111,7 +114,7 @@ class Serial:
             # launch confirmation
             launchConfirm = message[1:2]
             if launchConfirm == "0":
-                self.dataObj.launched = True
+                self.launched = True
             print("launchConfirm", launchConfirm)
         elif "C" in message:
             # message received confirmation
@@ -205,3 +208,6 @@ class Serial:
         if not self.waitingForConfirmation and len(self.messageBuffer) > 0:
             # try to send next message in buffer if we are not waiting for confirmation anymore
             self.writeSerial(self.messageBuffer.pop(0))
+
+    def getLaunched(self):
+        return self.launched

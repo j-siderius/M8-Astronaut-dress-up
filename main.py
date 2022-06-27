@@ -140,7 +140,7 @@ class Main:
             self.serial.encoder("planetData", self.datCalc.curData)
         self.heartBeatScreen.display(self.state)
         self.peakCount = 0
-        self.launched = self.datCalc.launched
+        self.launched = bool(self.serial.getLaunched())
 
     # when the user pressed the button
     def launchState(self):

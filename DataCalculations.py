@@ -39,8 +39,6 @@ class DatCalc:
         self.gasGiant = "No"
         self.granular = []
 
-        self.launched = False
-
     def dataConnect(self):
         """
         This function will connect to the .csv file and store the data in a list.
