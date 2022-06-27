@@ -254,3 +254,6 @@ class DatCalc:
 
     def returnDist(self):
         return self.curData[12]
+
+
+    #TODO: make a function for the granular data (aka the output data changes after launching the astronaut)

@@ -35,6 +35,7 @@ class Main:
         # variables for flow of program
         self.runBool = False
         self.state = 0
+        self.prevState = self.state
         self.planet = "Earth"
         self.prevPlanet = "Earth"
         self.launched = False
@@ -118,7 +119,10 @@ class Main:
         if self.state == 5:
             self.survivalState()
 
-        self.sound.stopSound(self.state)
+        if self.prevState != self.state:
+            self.prevState = self.state
+            self.serial.encoder("flowState", self.state)
+            self.sound.stopSound()
 
         print(self.datCalc.getPlanetData())
 
