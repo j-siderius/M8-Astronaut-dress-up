@@ -134,8 +134,8 @@ class Main:
             self.prevPlanet = self.planet
             self.sound.selectPlanet()
             self.datCalc.dataRelevant()
-            print(self.datCalc.curData)
             self.datCalc.survivalCalc()
+            print(self.datCalc.survival)
             self.serial.encoder("planetName", self.planet)
             self.serial.encoder("planetData", self.datCalc.curData)
         self.heartBeatScreen.display(self.state)

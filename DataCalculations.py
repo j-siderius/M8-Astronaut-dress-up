@@ -174,31 +174,33 @@ class DatCalc:
         Sets value of the bodyparts, based on what the user selected
         """
 
-        if astronautArray[0] == 1:
+        print(astronautArray)
+
+        if astronautArray[0] == "1":
             self.boots = "light"
-        elif astronautArray[1] == 1:
+        elif astronautArray[1] == "1":
             self.boots = "medium"
-        elif astronautArray[2] == 1:
+        elif astronautArray[2] == "1":
             self.boots = "heavy"
 
         # TODO: fix to current body parts
-        if astronautArray[3] == 1:
-            self.legs = "rocket"
-        else:
-            self.boots = "none"
+        if astronautArray[3] == "1":
+            self.legs = "none"
+        elif astronautArray[4] == "1":
+            self.boots = "rocket"
 
-        if astronautArray[4] == 1:
+        if astronautArray[5] == "1":
             self.torso = "cool"
-        elif astronautArray[5] == 1:
+        elif astronautArray[6] == "1":
             self.torso = "none"
-        elif astronautArray[6] == 1:
+        elif astronautArray[7] == "1":
             self.torso = "hot"
 
-        if astronautArray[7] == 1:
+        if astronautArray[8] == "1":
             self.helmet = "gas"
-        elif astronautArray[8] == 1:
+        elif astronautArray[9] == "1":
             self.helmet = "oxygen"
-        elif astronautArray[9] == 1:
+        elif astronautArray[10] == "1":
             self.helmet = "none"
 
     def setPlanet(self, planetArray):
