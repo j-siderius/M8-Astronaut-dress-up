@@ -172,6 +172,7 @@ class DatCalc:
         elif astronautArray[2] == 1:
             self.boots = "heavy"
 
+        # TODO: fix to current body parts
         if astronautArray[3] == 1:
             self.legs = "rocket"
         else:
