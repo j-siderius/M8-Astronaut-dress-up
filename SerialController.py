@@ -99,7 +99,9 @@ class Serial:
         elif "L" in message:
             # launch confirmation
             launchConfirm = message[1:2]
-            Serial.print("launchConfirm", launchConfirm)
+            if launchConfirm == "0":
+                self.dataObj.launched = True
+            #Serial.print("launchConfirm", launchConfirm)    #TODO: fix serial.print
         elif "C" in message:
             # message received confirmation
             if message[1] != self.sentMessageCheck:

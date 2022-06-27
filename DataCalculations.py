@@ -39,6 +39,8 @@ class DatCalc:
         self.gasGiant = "No"
         self.granular = []
 
+        self.launched = False
+
     def dataConnect(self):
         """
         This function will connect to the .csv file and store the data in a list.
@@ -273,5 +275,3 @@ class DatCalc:
 
     def returnDist(self):
         return self.curData[12]
-
-    # TODO: make a function for the granular data (aka the output data changes after launching the astronaut)

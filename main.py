@@ -91,6 +91,7 @@ class Main:
         # If the user has pressed the big red button
         if self.launched:
             self.launched = False
+            self.datCalc.launched = False
             self.state = 1
 
         # Earth state
@@ -140,6 +141,7 @@ class Main:
             self.serial.encoder("planetData", self.datCalc.curData)
         self.heartBeatScreen.display(self.state)
         self.peakCount = 0
+        self.launched = self.datCalc.launched
 
     # when the user pressed the button
     def launchState(self):
