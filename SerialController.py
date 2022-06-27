@@ -100,20 +100,37 @@ class Serial:
         """
         if function == "planetData":
             # incomding data format:
+            # [name, toxic, oxygen,]
             # ['Jupiter', '2.541', 'No', 'No', '-110', 'Yes', '0', '0', '0', '0', '90', '10', '10', '779']
+            # Planet,G-force,Toxic,Oxygen,Surface Temperature,Gas Giant,CO2,N2,O2,CH4,H2,He,Surface pressure,Distance
 
             # G-force|Toxic|Oxygen|SurfaceTemperature|GasGiant|CO2|N2|O2|CH4|H2|He|SurfacePressure|Distance
             #     F| T|  O|     K| G|  E|   |   |   |   |   |     P|      D
             # 0.000| 0|  0|  -000| 0| 00| 00| 00| 00| 00| 00| 0.000|  0.000
             # example: F0.908T1O0K-195G1E0|0|0|2|83|15P1000D2867
 
-            if data is not None:
-                msg = 'D' + str(data)
+            if data is not None and len(data) == 14:
+                msg = 'D'
+                msg += 'F' + str(data[2])  # g-force
+                tox = 1 if str(data[3]) == "Yes" else 0
+                msg += 'T' + tox  # toxicity
+                oxy = 1 if str(data[4]) == "Yes" else 0
+                msg += 'O' + oxy  # oxygen
+                msg += 'K' + str(data[5])  # temperature
+                gas = 1 if str(data[6]) == "Yes" else 0
+                msg += 'G' + gas  # gasgiant
+                msg += 'E' + str(data[7]) + '|' + str(data[8]) + '|' + str(data[9]) + '|' + str(data[10]) + '|' + str(data[11]) + '|' + str(data[12])  # Elements: CO2|N2|O2|CH4|H2|He
+                msg += 'P' + str(data[6])  # pressure
+                msg += 'D' + str(data[6])  # distance
                 self.writeSerial(msg)
+            else:
+                print("data array is not correct!")
         elif function == "planetName":
-            if data is not None:
-                msg = 'N' + str(data)
+            if data is not None and len(data) == 14:
+                msg = 'N' + str(data[1])  # name
                 self.writeSerial(msg)
+            else:
+                print("data array is not correct!")
         elif function == "astronautSurvival":
             if data is not None:
                 msg = 'S' + str(data)
