@@ -99,20 +99,18 @@ class Sound:
         if not self.victory.get_busy():
             self.victory.play(self.victorySound)
 
-    def stopSound(self, state):
+    def stopSound(self):
         """
         Stops all sounds from playing
         """
-        if self.currentState != state:
-            self.currentState = state
-            self.earthBackground.stop()
-            self.planetBackground.stop()
-            self.launch.stop()
-            self.heartbeepSound.stop()
-            self.select.stop()
-            self.spaceTravel.stop()
-            self.noise.stop()
-            self.heartbeeplongSound.stop()
+        self.earthBackground.stop()
+        self.planetBackground.stop()
+        self.launch.stop()
+        self.heartbeepSound.stop()
+        self.select.stop()
+        self.spaceTravel.stop()
+        self.noise.stop()
+        self.heartbeeplongSound.stop()
 
     def reset(self):
         pass
