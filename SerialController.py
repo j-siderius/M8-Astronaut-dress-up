@@ -67,7 +67,6 @@ class Serial:
         # this function runs within a thread, so we can introduce a infinite loop
         while True:
             # read all available from the serial port and print to serial
-            # TODO: change handling of incoming data
             buffer = self.port.readline().decode()
             self.decode(buffer)
             print(buffer)
@@ -100,7 +99,14 @@ class Serial:
         :param  data: data to include in the send
         """
         if function == "planetData":
-            # TODO: encode proper data
+            # incomding data format:
+            #
+
+            # G-force|Toxic|Oxygen|SurfaceTemperature|GasGiant|CO2|N2|O2|CH4|H2|He|SurfacePressure|Distance
+            #     F| T|  O|     K| G|  E|   |   |   |   |   |     P|      D
+            # 0.000| 0|  0|  -000| 0| 00| 00| 00| 00| 00| 00| 0.000|  0.000
+            # example: F0.908T1O0K-195G1E0|0|0|2|83|15P1000D2867
+
             if data is not None:
                 msg = 'D' + str(data)
                 self.writeSerial(msg)
