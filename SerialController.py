@@ -74,21 +74,31 @@ class Serial:
             time.sleep(0.001)
 
     def decode(self, message):
+        """
+        Decodes incoming serial messages and call applicable functions in the data class
+        :param  message: incoming serial message   
+        """
         if "PA" in message:
             # planet array (8 planets)
             planetArray = message[2:10]
-            # self.dataObj.setPlanet() #TODO:decode array, send main
+            self.dataObj.setPlanet(planetArray)
         elif "AA" in message:
             # astronaut array (11 parts)
             astronautArray = message[2:13]
-            # self.dataObj.setBodyParts() #TODO: decode array, send main
+            self.dataObj.setBodyParts(astronautArray)
         elif "L" in message:
             # launch confirmation
             launchConfirm = message[1:2]
+            Serial.print("launchConfirm", launchConfirm)
         else:
             print("Serial message could not be decoded")
 
     def encoder(self, function, data=None):
+        """
+        Encodes serial message to send to arduino
+        :param  function: which type of message to send
+        :param  data: data to include in the send
+        """
         if function == "planetData":
             if data is not None:
                 msg = 'D' + data
