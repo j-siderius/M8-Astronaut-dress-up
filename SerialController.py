@@ -110,7 +110,9 @@ class Serial:
         elif "L" in message:
             # launch confirmation
             launchConfirm = message[1:2]
-            Serial.print("launchConfirm", launchConfirm)
+            if launchConfirm == "0":
+                self.dataObj.launched = True
+            #Serial.print("launchConfirm", launchConfirm)    #TODO: fix serial.print
         elif "C" in message:
             # message received confirmation
             if message[1] != self.confirmToken:
@@ -141,12 +143,12 @@ class Serial:
                 msg = 'D'
                 msg += 'F' + str(data[1])  # g-force
                 tox = 1 if str(data[2]) == "Yes" else 0
-                msg += 'T' + tox  # toxicity
+                msg += 'T' + str(tox)  # toxicity
                 oxy = 1 if str(data[3]) == "Yes" else 0
-                msg += 'O' + oxy  # oxygen
+                msg += 'O' + str(oxy)  # oxygen
                 msg += 'K' + str(data[4])  # temperature
                 gas = 1 if str(data[5]) == "Yes" else 0
-                msg += 'G' + gas  # gasgiant
+                msg += 'G' + str(gas)  # gasgiant
                 msg += 'E' + str(data[6]) + '|' + str(data[7]) + '|' + str(data[8]) + '|' + str(data[9]) + '|' + str(data[10]) + '|' + str(data[11])  # Elements: CO2|N2|O2|CH4|H2|He
                 msg += 'P' + str(data[12])  # pressure
                 msg += 'D' + str(data[13])  # distance
@@ -157,7 +159,7 @@ class Serial:
         elif function == "planetName":
             # incoming data is data array, name is pos 0
             # outgoing data format: N[name]
-            if data is not None and len(data) == 14:
+            if data is not None: #TODO: fix the planetName encoding
                 msg = 'N' + str(data[0])  # name
                 self.writeSerial(msg)
             else:

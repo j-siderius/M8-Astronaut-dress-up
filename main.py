@@ -91,6 +91,7 @@ class Main:
         # If the user has pressed the big red button
         if self.launched:
             self.launched = False
+            self.datCalc.launched = False
             self.state = 1
 
         # Earth state
@@ -119,11 +120,8 @@ class Main:
 
         if self.prevState != self.state:
             self.prevState = self.state
-            self.serial.encoder("flowState", self.state)
+            self.serial.encoder("flowState", str(self.state))
             self.sound.stopSound()
-
-        #print(self.datCalc.getPlanetData())
-        print(self.datCalc.getGranularData())
 
         # runs every second
         if self.frameCount % 60 == 0:
@@ -136,18 +134,22 @@ class Main:
         if self.prevPlanet != self.planet:
             self.prevPlanet = self.planet
             self.sound.selectPlanet()
-            self.datCalc.dataRelevant(self.planet)
+            self.datCalc.dataRelevant()
             self.datCalc.survivalCalc()
             self.serial.encoder("planetName", self.planet)
             self.serial.encoder("planetData", self.datCalc.curData)
         self.heartBeatScreen.display(self.state)
         self.peakCount = 0
+        self.launched = self.datCalc.launched
 
     # when the user pressed the button
     def launchState(self):
         self.sound.launching()
 
         if self.delay(1000):
+            granular = self.datCalc.granular
+            print(granular)
+            self.serial.encoder("astronautSurvival", granular)
             self.state = 2
 
     # when the rocket is traveling through space
@@ -162,7 +164,6 @@ class Main:
     def planetState(self):
         self.sound.backGroundSpace()
         self.sound.backGroundNoise()
-        self.serial.writeSerial()
         self.heartBeatScreen.display(self.state)
         survival = self.datCalc.getSurvival()
         if survival[1]:
