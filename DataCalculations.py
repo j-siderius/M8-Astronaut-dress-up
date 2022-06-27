@@ -160,70 +160,62 @@ class DatCalc:
         else:
             return False
 
-    def setBodyParts(self):
+    def setBodyParts(self, astronautArray):
         """
         Sets value of the bodyparts, based on what the user selected
         """
 
-
-
-        if Serial.astronautArray[0] == 1:
+        if astronautArray[0] == 1:
             self.boots = "light"
-        elif Serial.astronautArray[1] == 1:
+        elif astronautArray[1] == 1:
             self.boots = "medium"
-        elif Serial.astronautArray[2] == 1:
+        elif astronautArray[2] == 1:
             self.boots = "heavy"
 
-        if Serial.astronautArray[3] == 1:
+        if astronautArray[3] == 1:
             self.legs = "rocket"
         else:
             self.boots = "none"
 
-        if Serial.astronautArray[4] == 1:
+        if astronautArray[4] == 1:
             self.torso = "cool"
-        elif Serial.astronautArray[5] == 1:
+        elif astronautArray[5] == 1:
             self.torso = "none"
-        elif Serial.astronautArray[6] == 1:
+        elif astronautArray[6] == 1:
             self.torso = "hot"
 
-        if Serial.astronautArray[7] == 1:
+        if astronautArray[7] == 1:
             self.helmet = "gas"
-        elif Serial.astronautArray[8] == 1:
+        elif astronautArray[8] == 1:
             self.helmet = "gasoxygen"
-        elif Serial.astronautArray[9] == 1:
+        elif astronautArray[9] == 1:
             self.helmet = "oxygen"
-        elif Serial.astronautArray[10] == 1:
+        elif astronautArray[10] == 1:
             self.helmet = "none"
 
-    def setPlanet(self, planetName):
+
+    def setPlanet(self, planetArray):
         '''
         Sets value of planet, based on what the user selected
         '''
 
-        self.planet = planetName
-
-        #planetValue = empty#replace empty with a reference to serialcontroller to get the value from arduino
-
-        '''
-        if planetValue == "R":
+        if planetArray[0] == 1:
             self.planet = "Mercury"
-        if planetValue == "V":
+        elif planetArray[1] == 1:
             self.planet = "Venus"
-        if planetValue == "E":
-            self.planet = "Earth"
-        if planetValue == "M":
+        elif planetArray[2] == 1:
             self.planet = "Moon"
-        if planetValue == "A":
+        elif planetArray[3] == 1:
             self.planet = "Mars"
-        if planetValue == "J":
+        elif planetArray[4] == 1:
             self.planet = "Jupiter"
-        if planetValue == "S":
+        elif planetArray[5] == 1:
             self.planet = "Saturn"
-        if planetValue == "U":
+        elif planetArray[6] == 1:
             self.planet = "Uranus"
-        if planetValue == "N":
+        elif planetArray[7] == 1:
             self.planet = "Neptune"
-        '''
+
 
     def planetScoreCalc(self):
         """

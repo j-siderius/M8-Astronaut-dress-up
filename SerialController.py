@@ -77,14 +77,15 @@ class Serial:
         if "PA" in message:
             # planet array (8 planets)
             planetArray = message[2:10]
-            # self.dataObj.setPlanet() #TODO:decode array, send main
+            self.dataObj.setPlanet(planetArray)
         elif "AA" in message:
             # astronaut array (11 parts)
             astronautArray = message[2:13]
-            # self.dataObj.setBodyParts() #TODO: decode array, send main
+            self.dataObj.setBodyParts(astronautArray)
         elif "L" in message:
             # launch confirmation
             launchConfirm = message[1:2]
+            Serial.print("launchConfirm", launchConfirm)
         else:
             print("Serial message could not be decoded")
 
