@@ -99,11 +99,11 @@ class Serial:
         :param  data: data to include in the send
         """
         if function == "planetData":
-            # incomding data format:
-            # [name, toxic, oxygen,]
+            # incoming data format:
             # ['Jupiter', '2.541', 'No', 'No', '-110', 'Yes', '0', '0', '0', '0', '90', '10', '10', '779']
             # Planet,G-force,Toxic,Oxygen,Surface Temperature,Gas Giant,CO2,N2,O2,CH4,H2,He,Surface pressure,Distance
 
+            # outgoing data format:
             # G-force|Toxic|Oxygen|SurfaceTemperature|GasGiant|CO2|N2|O2|CH4|H2|He|SurfacePressure|Distance
             #     F| T|  O|     K| G|  E|   |   |   |   |   |     P|      D
             # 0.000| 0|  0|  -000| 0| 00| 00| 00| 00| 00| 00| 0.000|  0.000
@@ -111,42 +111,51 @@ class Serial:
 
             if data is not None and len(data) == 14:
                 msg = 'D'
-                msg += 'F' + str(data[2])  # g-force
-                tox = 1 if str(data[3]) == "Yes" else 0
+                msg += 'F' + str(data[1])  # g-force
+                tox = 1 if str(data[2]) == "Yes" else 0
                 msg += 'T' + tox  # toxicity
-                oxy = 1 if str(data[4]) == "Yes" else 0
+                oxy = 1 if str(data[3]) == "Yes" else 0
                 msg += 'O' + oxy  # oxygen
-                msg += 'K' + str(data[5])  # temperature
-                gas = 1 if str(data[6]) == "Yes" else 0
+                msg += 'K' + str(data[4])  # temperature
+                gas = 1 if str(data[5]) == "Yes" else 0
                 msg += 'G' + gas  # gasgiant
-                msg += 'E' + str(data[7]) + '|' + str(data[8]) + '|' + str(data[9]) + '|' + str(data[10]) + '|' + str(data[11]) + '|' + str(data[12])  # Elements: CO2|N2|O2|CH4|H2|He
-                msg += 'P' + str(data[6])  # pressure
-                msg += 'D' + str(data[6])  # distance
+                msg += 'E' + str(data[6]) + '|' + str(data[7]) + '|' + str(data[8]) + '|' + str(data[9]) + '|' + str(data[10]) + '|' + str(data[11])  # Elements: CO2|N2|O2|CH4|H2|He
+                msg += 'P' + str(data[12])  # pressure
+                msg += 'D' + str(data[13])  # distance
                 self.writeSerial(msg)
             else:
                 print("data array is not correct!")
+
         elif function == "planetName":
+            # incoming data is data array, name is pos 0
+            # outgoing data format: N[name]
             if data is not None and len(data) == 14:
-                msg = 'N' + str(data[1])  # name
+                msg = 'N' + str(data[0])  # name
                 self.writeSerial(msg)
             else:
                 print("data array is not correct!")
+
         elif function == "astronautSurvival":
-            """
-            Granular data: an array of 4 variables. Only used once the astronaut has landed on the planet
-            first value = toxicity; 0 = no toxic, 1 = toxic
-            second value = oxygen; 0 = no oxygen, 1 = oxygen
-            third value = temperature; 0 = cold, 1 = normal, 2 is hot
-            fourth value = gas giant; 0 = no gas giant, 1 = gas giant
-            For example: [0, 1, 2, 0]
-            """
-            if data is not None:
-                msg = 'S' + str(data)
+            # Granular data: an array of 4 variables. Only used once the astronaut has landed on the planet
+            # first value = toxicity; 0 = no toxic, 1 = toxic
+            # second value = oxygen; 0 = no oxygen, 1 = oxygen
+            # third value = temperature; 0 = cold, 1 = normal, 2 is hot
+            # fourth value = gas giant; 0 = no gas giant, 1 = gas giant
+            # For example: [0, 1, 2, 0]
+
+            if data is not None and len(data) == 4:
+                msg = 'S'
+                msg += str(data[0]) + str(data[1]) + str(data[2]) + str(data[3])
                 self.writeSerial(msg)
+            else:
+                print("data array is not correct!")
+
         elif function == "flowState":
-            if data is not None:
+            # sends current state
+            if data is not None and data.isnumeric():
                 msg = 'F' + str(data)
                 self.writeSerial(msg)
+
         elif function == "launchConfirm":
             if data is not None:
                 msg = 'L' + str(data)
