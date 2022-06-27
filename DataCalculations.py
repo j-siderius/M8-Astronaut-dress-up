@@ -248,5 +248,8 @@ class DatCalc:
         print('temperature ' + self.temperature)
         print('gasgiant ' + self.gasGiant)
 
+    def getPlanetScore(self):
+        return self.curData
+
     def returnDist(self):
         return self.curData[12]

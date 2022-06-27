@@ -201,13 +201,13 @@ class Main:
 
     # A test animator, which automatically selects planets and presses launch button
     def testAnimator(self):
-        if self.frameCount > 50:
-            self.planet = "Jupiter"
-
         if self.frameCount > 100:
             self.planet = "Jupiter"
 
-        if self.frameCount == 200:
+        if self.frameCount > 200:
+            self.planet = "Earth"
+
+        if self.frameCount == 400:
             self.launched = True
 
     def get_pressed_keys(self):
