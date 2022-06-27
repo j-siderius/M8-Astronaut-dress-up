@@ -19,9 +19,12 @@ class Serial:
         """
 
         self.dataObj = dataObj
+
+        # confirmation ckeck and queue for messages
         self.waitingForConfirmation = False
-        self.sentMessageCheck = ""
-        self.messageBuffer = ""
+        self.confirmToken = ""
+        self.messageBuffer = []
+        self.previous_time = time.perf_counter()
 
         # if no port is specified, the program will automatically try to find and connect to a connected Arduino device
         if not port:
@@ -66,9 +69,11 @@ class Serial:
             # convert the argument to the proper encoding
             arg = bytes(argument.encode())
             self.port.write(arg)
+            self.confirmToken = str(arg[0])
+            self.waitingForConfirmation = True
         else:
-            # still waiting for confirmation, wait with sending
-            self.messageBuffer = argument
+            # still waiting for confirmation, wait with sending and add to buffer
+            self.messageBuffer.append(argument)
 
     def readSerial(self):
         """
@@ -80,8 +85,14 @@ class Serial:
             # read all available from the serial port and print to serial
             buffer = self.port.readline().decode()
             self.decode(buffer)
-            #print(buffer)
-            time.sleep(0.001)
+            # print(buffer)  # debugging
+            # time.sleep(0.001)  # debugging
+
+            # check periodically if we have messages in the buffer still to send
+            self.elapsed_time = time.perf_counter() - self.previous_time
+            if self.elapsed_time > 1 / 5:
+                self.previous_time = time.perf_counter()
+                self.messageQueue()
 
     def decode(self, message):
         """
@@ -104,7 +115,7 @@ class Serial:
             #Serial.print("launchConfirm", launchConfirm)    #TODO: fix serial.print
         elif "C" in message:
             # message received confirmation
-            if message[1] != self.sentMessageCheck:
+            if message[1] != self.confirmToken:
                 print("Confirmation receipt error: Confirmation does not match the sent function!")
             else:
                 self.waitingForConfirmation = False
@@ -190,5 +201,7 @@ class Serial:
         """
         This function will contain the queue for messages
         """
+        # check if we still have messages waiting
         if not self.waitingForConfirmation:
-            self.writeSerial(self.messageBuffer)
+            # try to send next message in buffer if we are not waiting for confirmation anymore
+            self.writeSerial(self.messageBuffer.pop(0))
