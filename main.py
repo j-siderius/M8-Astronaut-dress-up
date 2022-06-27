@@ -120,7 +120,7 @@ class Main:
 
         if self.prevState != self.state:
             self.prevState = self.state
-            self.serial.encoder("flowState", self.state)
+            self.serial.encoder("flowState", str(self.state))
             self.sound.stopSound()
 
         # runs every second
@@ -162,7 +162,6 @@ class Main:
     def planetState(self):
         self.sound.backGroundSpace()
         self.sound.backGroundNoise()
-        self.serial.writeSerial()
         self.heartBeatScreen.display(self.state)
         survival = self.datCalc.getSurvival()
         if survival[1]:
