@@ -202,6 +202,6 @@ class Serial:
         This function will contain the queue for messages
         """
         # check if we still have messages waiting
-        if not self.waitingForConfirmation:
+        if not self.waitingForConfirmation and len(self.messageBuffer) > 0:
             # try to send next message in buffer if we are not waiting for confirmation anymore
             self.writeSerial(self.messageBuffer.pop(0))
