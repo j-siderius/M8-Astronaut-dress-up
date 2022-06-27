@@ -1,11 +1,12 @@
+"""
+This class handles the serial connection between laptop and arduino
+"""
+
 import serial
 import serial.tools.list_ports
 import threading
 import time
 
-"""
-This class handles the serial connection between laptop and arduino
-"""
 
 class Serial:
 
@@ -67,8 +68,45 @@ class Serial:
         while True:
             # read all available from the serial port and print to serial
             # TODO: change handling of incoming data
-            print(self.port.readline().decode())
+            buffer = self.port.readline().decode()
+            self.decode(buffer)
+            print(buffer)
             time.sleep(0.001)
+
+    def decode(self, message):
+        if "PA" in message:
+            # planet array (8 planets)
+            planetArray = message[2:10]
+        elif "AA" in message:
+            # astronaut array (11 parts)
+            astronautArray = message[2:13]
+        elif "L" in message:
+            # launch confirmation
+            launchConfirm = message[1:2]
+        else:
+            print("Serial message could not be decoded")
+
+    def encoder(self, function, data=None):
+        if function == "planetData":
+            if data is not None:
+                msg = 'D' + data
+                self.writeSerial(msg)
+        elif function == "planetName":
+            if data is not None:
+                msg = 'N' + data
+                self.writeSerial(msg)
+        elif function == "astronautSurvival":
+            if data is not None:
+                msg = 'S' + data
+                self.writeSerial(msg)
+        elif function == "flowState":
+            if data is not None:
+                msg = 'F' + data
+                self.writeSerial(msg)
+        elif function == "launchConfirm":
+            if data is not None:
+                msg = 'L' + data
+                self.writeSerial(msg)
 
     def messageQueue(self):
         """
