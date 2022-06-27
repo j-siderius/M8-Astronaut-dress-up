@@ -85,7 +85,9 @@ class Main:
 
         #self.getSetSerial()
 
-        self.testAnimator()
+        self.planet = self.datCalc.planet
+
+        #self.testAnimator()
 
         # If the user has pressed the big red button
         if self.launched:
@@ -132,6 +134,8 @@ class Main:
             self.prevPlanet = self.planet
             self.sound.selectPlanet()
             self.datCalc.dataRelevant(self.planet)
+            self.serial.encoder("planetName", self.planet)
+            self.serial.encoder("planetData", self.datCalc.curData)
         self.heartBeatScreen.display(self.state)
         self.peakCount = 0
 
