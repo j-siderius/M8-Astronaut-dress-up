@@ -28,6 +28,7 @@ class Serial:
         # build a thread for the serial receiving function
         serialThread = threading.Thread(target=self.readSerial)
         serialThread.start()
+        serialThread.join()
 
     def getSerialPort(self):
         """
@@ -102,23 +103,23 @@ class Serial:
         if function == "planetData":
             # TODO: encode proper data
             if data is not None:
-                msg = 'D' + data
+                msg = 'D' + str(data)
                 self.writeSerial(msg)
         elif function == "planetName":
             if data is not None:
-                msg = 'N' + data
+                msg = 'N' + str(data)
                 self.writeSerial(msg)
         elif function == "astronautSurvival":
             if data is not None:
-                msg = 'S' + data
+                msg = 'S' + str(data)
                 self.writeSerial(msg)
         elif function == "flowState":
             if data is not None:
-                msg = 'F' + data
+                msg = 'F' + str(data)
                 self.writeSerial(msg)
         elif function == "launchConfirm":
             if data is not None:
-                msg = 'L' + data
+                msg = 'L' + str(data)
                 self.writeSerial(msg)
 
     def messageQueue(self):
