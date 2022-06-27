@@ -150,6 +150,7 @@ class Main:
             granular = self.datCalc.granular
             print(granular)
             self.serial.encoder("astronautSurvival", granular)
+
             self.state = 2
 
     # when the rocket is traveling through space
