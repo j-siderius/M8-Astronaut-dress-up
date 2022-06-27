@@ -150,10 +150,16 @@ class DatCalc:
         elif data < self.temperatureLimitLower and self.torso == "hot":
             self.granular.append(1)
             return True
-        elif data > self.temperatureLimitUpper and self.torso != "cool":
+        elif data > self.temperatureLimitUpper and self.torso != "hot":
             self.granular.append(2)
             return False
-        elif data < self.temperatureLimitLower and self.torso != "hot":
+        elif data < self.temperatureLimitLower and self.torso != "cool":
+            self.granular.append(0)
+            return False
+        elif self.temperatureLimitUpper > data > self.temperatureLimitLower and self.torso == "hot":
+            self.granular.append(2)
+            return False
+        elif self.temperatureLimitUpper > data > self.temperatureLimitLower and self.torso == "cool":
             self.granular.append(0)
             return False
 
