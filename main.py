@@ -126,8 +126,8 @@ class Main:
             self.serial.encoder("flowState", self.state)
             self.sound.stopSound()
 
-        print(self.datCalc.getPlanetData())
-        #print(self.datCalc.getGranularData())
+        #print(self.datCalc.getPlanetData())
+        print(self.datCalc.getGranularData())
 
         # runs every second
         if self.frameCount % 60 == 0:

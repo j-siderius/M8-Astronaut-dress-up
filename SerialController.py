@@ -132,6 +132,14 @@ class Serial:
             else:
                 print("data array is not correct!")
         elif function == "astronautSurvival":
+            """
+            Granular data: an array of 4 variables. Only used once the astronaut has landed on the planet
+            first value = toxicity; 0 = no toxic, 1 = toxic
+            second value = oxygen; 0 = no oxygen, 1 = oxygen
+            third value = temperature; 0 = cold, 1 = normal, 2 is hot
+            fourth value = gas giant; 0 = no gas giant, 1 = gas giant
+            For example: [0, 1, 2, 0]
+            """
             if data is not None:
                 msg = 'S' + str(data)
                 self.writeSerial(msg)
