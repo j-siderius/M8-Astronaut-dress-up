@@ -164,6 +164,9 @@ class DatCalc:
         """
         Sets value of the bodyparts, based on what the user selected
         """
+
+
+
         if Serial.astronautArray[0] == 1:
             self.boots = "light"
         elif Serial.astronautArray[1] == 1:
@@ -192,12 +195,16 @@ class DatCalc:
         elif Serial.astronautArray[10] == 1:
             self.helmet = "none"
 
-    def setPlanet(self):
+    def setPlanet(self, planetName):
         '''
         Sets value of planet, based on what the user selected
         '''
-        planetValue = empty#replace empty with a reference to serialcontroller to get the value from arduino
 
+        self.planet = planetName
+
+        #planetValue = empty#replace empty with a reference to serialcontroller to get the value from arduino
+
+        '''
         if planetValue == "R":
             self.planet = "Mercury"
         if planetValue == "V":
@@ -216,6 +223,7 @@ class DatCalc:
             self.planet = "Uranus"
         if planetValue == "N":
             self.planet = "Neptune"
+        '''
 
     def planetScoreCalc(self):
         """

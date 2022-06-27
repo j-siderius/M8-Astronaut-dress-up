@@ -15,7 +15,7 @@ class Main:
 
     def __init__(self):
         pygame.init()
-        # self.serial = Serial()
+
         # All classes and setups
         self.heartBeatScreen = Heartbeat()
         self.heartBeatScreen.readHeartrateVolt()
@@ -24,6 +24,7 @@ class Main:
         self.sound.audioSetup()
         self.datCalc = DatCalc()
         self.datCalc.dataConnect()
+        self.serial = Serial(self.datCalc)
 
         # variables for 60fps loop
         self.frameRate = 60
@@ -52,8 +53,6 @@ class Main:
         """
         self.runBool = True
         self.loop()
-
-    # self.serial.serialPorts()
 
     def loop(self):
         """
@@ -84,8 +83,7 @@ class Main:
         Dead
         '''
 
-        # self.serial.readSerial()
-        # self.serial.writeSerial()
+        #self.getSetSerial()
 
         self.testAnimator()
 
@@ -157,6 +155,7 @@ class Main:
         self.datCalc.survivalCalc()
         self.sound.backGroundSpace()
         self.sound.backGroundNoise()
+        self.serial.writeSerial()
         self.heartBeatScreen.display(self.state)
         survival = self.datCalc.getSurvival()
         if survival[1]:
@@ -170,7 +169,7 @@ class Main:
                 self.sound.heartBeat()
                 self.peakCount += 1
         if not self.survival:
-            self.heartBeatScreen.speed *= 1.001
+            self.heartBeatScreen.speed *= 1.0015
             if self.heartBeatScreen.speed > 4:
                 self.state = 4
         elif self.survival:
@@ -201,13 +200,17 @@ class Main:
             self.delayBool = True
             return True
 
+    def getSetSerial(self):
+        userInput = self.serial.decode()
+        self.planet = userInput
+
     # A test animator, which automatically selects planets and presses launch button
     def testAnimator(self):
         if self.frameCount > 100:
             self.planet = "Jupiter"
 
         if self.frameCount > 200:
-            self.planet = "Earth"
+            self.planet = "Mars"
 
         if self.frameCount == 400:
             self.launched = True

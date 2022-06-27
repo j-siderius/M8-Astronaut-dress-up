@@ -10,13 +10,13 @@ import time
 
 class Serial:
 
-    def __init__(self, port=None, baudrate=9600):
+    def __init__(self, dataObj, port=None, baudrate=9600):
         """
         Initializes the serial object
         :param port: serial port that the controller is connected to
         :param baudrate: communication baud rate for talking to the serial device
         """
-
+        self.dataObj = dataObj
         # if no port is specified, the program will automatically try to find and connect to a connected Arduino device
         if not port:
             device = self.getSerialPort()
@@ -68,8 +68,47 @@ class Serial:
         while True:
             # read all available from the serial port and print to serial
             # TODO: change handling of incoming data
-            print(self.port.readline().decode())
+            buffer = self.port.readline().decode()
+            self.decode(buffer)
+            print(buffer)
             time.sleep(0.001)
+
+    def decode(self, message):
+        if "PA" in message:
+            # planet array (8 planets)
+            planetArray = message[2:10]
+            # self.dataObj.setPlanet() #TODO:decode array, send main
+        elif "AA" in message:
+            # astronaut array (11 parts)
+            astronautArray = message[2:13]
+            # self.dataObj.setBodyParts() #TODO: decode array, send main
+        elif "L" in message:
+            # launch confirmation
+            launchConfirm = message[1:2]
+        else:
+            print("Serial message could not be decoded")
+
+    def encoder(self, function, data=None):
+        if function == "planetData":
+            if data is not None:
+                msg = 'D' + data
+                self.writeSerial(msg)
+        elif function == "planetName":
+            if data is not None:
+                msg = 'N' + data
+                self.writeSerial(msg)
+        elif function == "astronautSurvival":
+            if data is not None:
+                msg = 'S' + data
+                self.writeSerial(msg)
+        elif function == "flowState":
+            if data is not None:
+                msg = 'F' + data
+                self.writeSerial(msg)
+        elif function == "launchConfirm":
+            if data is not None:
+                msg = 'L' + data
+                self.writeSerial(msg)
 
     def messageQueue(self):
         """
