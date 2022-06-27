@@ -74,6 +74,10 @@ class Serial:
             time.sleep(0.001)
 
     def decode(self, message):
+        """
+        Decodes incoming serial messages and call applicable functions in the data class
+        :param  message: incoming serial message   
+        """
         if "PA" in message:
             # planet array (8 planets)
             planetArray = message[2:10]
@@ -90,6 +94,11 @@ class Serial:
             print("Serial message could not be decoded")
 
     def encoder(self, function, data=None):
+        """
+        Encodes serial message to send to arduino
+        :param  function: which type of message to send
+        :param  data: data to include in the send
+        """
         if function == "planetData":
             if data is not None:
                 msg = 'D' + data
