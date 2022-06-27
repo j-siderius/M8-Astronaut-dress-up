@@ -122,9 +122,6 @@ class Main:
             self.serial.encoder("flowState", self.state)
             self.sound.stopSound()
 
-        #print(self.datCalc.getPlanetData())
-        print(self.datCalc.getGranularData())
-
         # runs every second
         if self.frameCount % 60 == 0:
             pass
@@ -136,7 +133,8 @@ class Main:
         if self.prevPlanet != self.planet:
             self.prevPlanet = self.planet
             self.sound.selectPlanet()
-            self.datCalc.dataRelevant(self.planet)
+            self.datCalc.dataRelevant()
+            print(self.datCalc.curData)
             self.datCalc.survivalCalc()
             self.serial.encoder("planetName", self.planet)
             self.serial.encoder("planetData", self.datCalc.curData)

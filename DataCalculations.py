@@ -58,12 +58,10 @@ class DatCalc:
                 pop.append(self.rows[i][j])
             self.rows[i] = pop
 
-    def dataRelevant(self, planet):
+    def dataRelevant(self):
         """
         This function will determine which data is relevant.
         """
-
-        self.planet = planet
 
         for i in range(0, len(self.rows)):
             if self.planet in self.rows[i]:
@@ -208,24 +206,24 @@ class DatCalc:
         Sets value of planet, based on what the user selected
         """
 
-        if planetArray[0] == 1:
+        if planetArray[0] == "1":
             self.planet = "Mercury"
-        elif planetArray[1] == 1:
+        elif planetArray[1] == "1":
             self.planet = "Venus"
-        elif planetArray[2] == 1:
+        elif planetArray[2] == "1":
             self.planet = "Moon"
-        elif planetArray[3] == 1:
+        elif planetArray[3] == "1":
             self.planet = "Mars"
-        elif planetArray[4] == 1:
+        elif planetArray[4] == "1":
             self.planet = "Jupiter"
-        elif planetArray[5] == 1:
+        elif planetArray[5] == "1":
             self.planet = "Saturn"
-        elif planetArray[6] == 1:
+        elif planetArray[6] == "1":
             self.planet = "Uranus"
-        elif planetArray[7] == 1:
+        elif planetArray[7] == "1":
             self.planet = "Neptune"
-        elif "0" not in planetArray:
-            self.planet = "None"
+        elif "1" not in planetArray:
+            self.planet = "Earth"
 
     def planetScoreCalc(self):
         """
