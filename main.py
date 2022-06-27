@@ -156,6 +156,7 @@ class Main:
     def travelState(self):
         self.sound.travel()
         travelDelay = int((float(self.datCalc.returnDist()) ** 0.25) * self.frameRate * self.travelDuration)
+        self.serial.encoder("travelTime", travelDelay)
         if self.delay(travelDelay):
             self.sound.landing()
             self.state = 3

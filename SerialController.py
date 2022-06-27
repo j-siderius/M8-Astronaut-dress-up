@@ -175,6 +175,12 @@ class Serial:
                 msg = 'F' + str(data)
                 self.writeSerial(msg)
 
+        elif function == "travelTime":
+            # sends the travel time to the planet
+            if data is not None:
+                msg = 'T' + str(data)
+                self.writeSerial(msg)
+
         elif function == "launchConfirm":
             if data is not None:
                 msg = 'L' + str(data)
