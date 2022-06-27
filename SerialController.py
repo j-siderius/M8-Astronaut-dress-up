@@ -113,8 +113,10 @@ class Serial:
         elif "L" in message:
             # launch confirmation
             launchConfirm = message[1:2]
-            if launchConfirm == "0":
+            if launchConfirm == "1":
                 self.launched = True
+            elif launchConfirm == "0":
+                self.launched = False
             print("launchConfirm", launchConfirm)
         elif "C" in message:
             # message received confirmation
