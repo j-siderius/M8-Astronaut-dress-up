@@ -101,9 +101,6 @@ class DatCalc:
         else:
             self.survivalBool = True
 
-    def returnSurvival(self):
-        return self.survival, self.survivalBool
-
     def gravityCalc(self, data):
         """
         Calculates the gravity survivability
@@ -248,7 +245,10 @@ class DatCalc:
         print('temperature ' + self.temperature)
         print('gasgiant ' + self.gasGiant)
 
-    def getPlanetScore(self):
+    def getSurvival(self):
+        return self.survival, self.survivalBool
+
+    def getPlanetData(self):
         return self.curData
 
     def returnDist(self):

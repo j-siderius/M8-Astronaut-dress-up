@@ -120,6 +120,8 @@ class Main:
 
         self.sound.stopSound(self.state)
 
+        print(self.datCalc.getPlanetData())
+
         # runs every second
         if self.frameCount % 60 == 0:
             pass
@@ -156,7 +158,7 @@ class Main:
         self.sound.backGroundSpace()
         self.sound.backGroundNoise()
         self.heartBeatScreen.display(self.state)
-        survival = self.datCalc.returnSurvival()
+        survival = self.datCalc.getSurvival()
         if survival[1]:
             self.survival = True
         else:
