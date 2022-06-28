@@ -132,7 +132,10 @@ class Main:
 
         # runs every second
         if self.frameCount % 60 == 0:
-            pass
+            print(self.state)
+            print(self.preLaunched)
+            print(self.launched)
+
     # when the user is still on earth selecting planets
     def earthState(self):
         self.sound.reset()
