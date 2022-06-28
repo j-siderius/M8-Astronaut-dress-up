@@ -183,8 +183,6 @@ class DatCalc:
         Sets value of the bodyparts, based on what the user selected
         """
 
-        print(astronautArray)
-
         self.bodyError.clear()
 
         bootsMSG = astronautArray[0:3]
@@ -249,14 +247,16 @@ class DatCalc:
         elif helmetMSG.count("1") > 1:
             self.helmet = "none"
             self.bodyError.append(1)
-        print(self.bodyError)
 
     def setPlanet(self, planetArray):
         """
         Sets value of planet, based on what the user selected
         """
 
-        if planetArray[0] == "1":
+        if planetArray.count("1") > 1:
+            self.planet = "Too many"
+            print("Too many planets")
+        elif planetArray[0] == "1":
             self.planet = "Mercury"
         elif planetArray[1] == "1":
             self.planet = "Venus"
@@ -274,8 +274,6 @@ class DatCalc:
             self.planet = "Neptune"
         elif "1" not in planetArray:
             self.planet = "Earth"
-        elif planetArray.count("1") > 1:
-            self.planet = "Too many"
 
     def getSurvival(self):
         return self.survival, self.survivalBool
@@ -305,7 +303,7 @@ class DatCalc:
         else:
             self.error.append(0)
 
-        if "1" in self.bodyError:
+        if 1 in self.bodyError:
             self.error.append(1)
         else:
             self.error.append(0)
