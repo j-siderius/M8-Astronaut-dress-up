@@ -202,6 +202,7 @@ class Main:
         self.heartBeatScreen.display(self.state)
         self.heartBeatScreen.speed = 0
         if self.delay(400):
+            self.resetValues()
             self.state = 0
 
     # when the astronaut survives
@@ -209,6 +210,7 @@ class Main:
         self.heartBeatScreen.display(self.state)
         self.sound.survived()
         if self.delay(400):
+            self.resetValues()
             self.state = 0
 
     # A simple delay check method
@@ -223,7 +225,6 @@ class Main:
     # Checks for errors when launch happens
     def errorCheck(self):
         error = self.datCalc.returnError()
-        print(error)
         if error[0] == 1:
             self.error.setErrorText('You want to stay here?', 'Select a planet to travel to')
             self.errorDisplay = True
@@ -235,9 +236,12 @@ class Main:
             self.errorDisplay = True
         elif error[0] == 0 and error[1] == 0:
             self.error.setErrorText(' ', ' ')
-            self.preLaunched = self.launched
+            self.launched = self.preLaunched
             self.preLaunched = False
             self.errorDisplay = False
+
+    def resetValues(self):
+        self.heartBeatScreen.speed = 1
 
     # A test animator, which automatically selects planets and presses launch button
     def testAnimator(self):
