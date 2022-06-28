@@ -104,15 +104,18 @@ class Serial:
         """
         if "PA" in message:
             # planet array (8 planets)
-            planetArray = message[2:10]
+            index = message.index("PA")+2
+            planetArray = message[index:index+8]
             self.dataObj.setPlanet(planetArray)
         elif "AA" in message:
             # astronaut array (11 parts)
-            astronautArray = message[2:13]
+            index = message.index("AA")+2
+            astronautArray = message[index:index+11]
             self.dataObj.setBodyParts(astronautArray)
         elif "L" in message:
             # launch confirmation
-            launchConfirm = message[1:2]
+            index = message.index("L")+1
+            launchConfirm = message[index:index+1]
             if launchConfirm == "1":
                 self.launched = True
             elif launchConfirm == "0":
