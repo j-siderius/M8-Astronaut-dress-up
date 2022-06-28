@@ -6,6 +6,7 @@ from Sound import Sound
 from SerialController import Serial
 from heartBeat import Heartbeat
 from DataCalculations import DatCalc
+from ErrorMessage import Errormessage
 import pygame
 import time
 import math
@@ -26,6 +27,7 @@ class Main:
         self.datCalc = DatCalc()
         self.datCalc.dataConnect()
         self.serial = Serial(self.datCalc)
+        self.error = Errormessage()
 
         # variables for 60fps loop
         self.frameRate = 60
@@ -40,9 +42,11 @@ class Main:
         self.planet = "Earth"
         self.prevPlanet = "Earth"
         self.launched = False
+        self.preLaunched = False
         self.landed = False
         self.travelDuration = 10
         self.survival = False
+        self.errorDisplay = False
 
         # For def delay
         self.prevTimer = 0
@@ -87,6 +91,12 @@ class Main:
         '''
 
         self.planet = self.datCalc.planet
+
+        if self.preLaunched:
+            self.errorCheck()
+
+        if self.errorDisplay:
+            self.error.display()
 
         # If the user has pressed the big red button
         if self.launched:
@@ -140,7 +150,7 @@ class Main:
             self.serial.encoder("planetData", self.datCalc.curData)
         self.heartBeatScreen.display(self.state)
         self.peakCount = 0
-        self.launched = bool(self.serial.getLaunched())
+        self.preLaunched = bool(self.serial.getLaunched())
 
     # when the user pressed the button
     def launchState(self):
@@ -209,6 +219,23 @@ class Main:
         if self.prevTimer + delay == self.frameCount:
             self.delayBool = True
             return True
+
+    # Checks for errors when launch happens
+    def errorCheck(self):
+        error = self.datCalc.returnError()
+        if error[0] == "1":
+            self.error.setErrorText('You want to stay here?', 'Select a planet to travel to')
+            self.errorDisplay = True
+        elif error[0] == "2":
+            self.error.setErrorText('You can stay at only one planet', 'Select only one planet to travel to')
+            self.errorDisplay = True
+        elif error[1] == "1":
+            self.error.setErrorText('No Aliens Allowed!', 'Check the spacesuit compartment')
+            self.errorDisplay = True
+        elif error[0] == "0" and error[1] == "0":
+            self.preLaunched = self.launched
+            self.preLaunched = False
+            self.errorDisplay = False
 
     # A test animator, which automatically selects planets and presses launch button
     def testAnimator(self):

@@ -9,28 +9,27 @@ class Errormessage:
         self.screen = pygame.display.set_mode((800, 600))
         self.screen_width, self.screen_height = pygame.display.get_surface().get_size()
 
-        self.font = pygame.font.SysFont('arialBold', 50)
+        self.font = pygame.font.SysFont('arialbold', 50)
         self.font1 = pygame.font.SysFont('arial', 45)
         self.WHITE = (255, 255, 255)
         self.BLACK = (0, 0, 0)
         self.YELLOW = (230, 230, 0)
         self.text = self.font.render('!', True, self.WHITE)
         self.textRect = self.text.get_rect()
-        self.textRect.center = (self.screen_width//2, self.screen_height//10 + 22)
+        self.textRect.center = (self.screen_width//2, self.screen_height//10 +22)
         self.text1 = self.font1.render('WARNING!', True, self.WHITE)
         self.textRect1 = self.text1.get_rect()
-        self.textRect1.center = (self.screen_width//2, self.screen_height//5 + 22)
-        self.text2 = self.font1.render('', True, self.WHITE)
+        self.textRect1.center = (self.screen_width//2, self.screen_height//5 +22)
+        self.text2 = self.font1.render('No Aliens Allowed', True, self.WHITE)
         self.textRect2 = self.text2.get_rect()
-        self.textRect2.center = (self.screen_width//2, self.screen_height//2 - 22)
-        self.text3 = self.font1.render('', True, self.WHITE)
+        self.textRect2.center = (self.screen_width//2, self.screen_height//2 -22)
+        self.text3 = self.font1.render('Check the spacesuit compartment', True, self.WHITE)
         self.textRect3 = self.text3.get_rect()
-        self.textRect3.center = (self.screen_width//2, self.screen_height//2 + 22)
+        self.textRect3.center = (self.screen_width//2, self.screen_height//2 +22)
 
     def setErrorText(self, error1, error2):
         self.text2 = self.font1.render(error1, True, self.WHITE)
         self.text3 = self.font1.render(error2, True, self.WHITE)
-
 
     def display(self):
         # clear the screen
@@ -61,8 +60,10 @@ class Errormessage:
 
         pygame.display.update()
 
-ErrorMessage = Errormessage()
+
+errorMessage = Errormessage()
+
 
 if __name__ == '__main__':
-    ErrorMessage.display()
+    errorMessage.display()
 

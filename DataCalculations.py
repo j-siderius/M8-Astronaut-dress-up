@@ -39,6 +39,9 @@ class DatCalc:
         self.gasGiant = "No"
         self.granular = []
 
+        self.bodyError = []
+        self.error = []
+
     def dataConnect(self):
         """
         This function will connect to the .csv file and store the data in a list.
@@ -139,7 +142,7 @@ class DatCalc:
         """
         Calculates the temperature survivability
         """
-        if self.temperatureLimitUpper > data > self.temperatureLimitLower and self.torso == "none":
+        if self.temperatureLimitUpper > data > self.temperatureLimitLower and self.torso == "regular":
             self.granular.append(1)
             return True
         elif data > self.temperatureLimitUpper and self.torso == "cool":
@@ -182,32 +185,75 @@ class DatCalc:
 
         print(astronautArray)
 
-        if astronautArray[0] == "1":
-            self.boots = "light"
-        elif astronautArray[1] == "1":
-            self.boots = "medium"
-        elif astronautArray[2] == "1":
-            self.boots = "heavy"
+        self.bodyError.clear()
+
+        bootsMSG = astronautArray[0:3]
+        print(bootsMSG)
+        if bootsMSG.count("1") == 1:
+            if bootsMSG[0] == "1":
+                self.boots = "light"
+            elif bootsMSG[1] == "1":
+                self.boots = "medium"
+            elif bootsMSG[2] == "1":
+                self.boots = "heavy"
+            self.bodyError.append(0)
+        elif "1" not in bootsMSG:
+            self.boots = "none"
+            self.bodyError.append(1)
+        elif bootsMSG.count("1") > 1:
+            self.boots = "none"
+            self.bodyError.append(1)
 
         # TODO: fix to current body parts
-        if astronautArray[3] == "1":
-            self.legs = "none"
-        elif astronautArray[4] == "1":
-            self.boots = "rocket"
+        legsMSG = astronautArray[3:5]
+        print(legsMSG)
+        if legsMSG.count("1") == 1:
+            if legsMSG[0] == "1":
+                self.legs = "regular"
+            elif legsMSG[1] == "1":
+                self.boots = "rocket"
+            self.bodyError.append(0)
+        elif "1" not in legsMSG:
+            self.boots = "none"
+            self.bodyError.append(1)
+        elif legsMSG.count("1") > 1:
+            self.boots = "none"
+            self.bodyError.append(1)
 
-        if astronautArray[5] == "1":
-            self.torso = "cool"
-        elif astronautArray[6] == "1":
+        torsoMSG = astronautArray[5:8]
+        print(torsoMSG)
+        if torsoMSG.count("1") == 1:
+            if astronautArray[5] == "1":
+                self.torso = "cool"
+            elif astronautArray[6] == "1":
+                self.torso = "regular"
+            elif astronautArray[7] == "1":
+                self.torso = "hot"
+            self.bodyError.append(0)
+        elif "1" not in torsoMSG:
             self.torso = "none"
-        elif astronautArray[7] == "1":
-            self.torso = "hot"
+            self.bodyError.append(1)
+        elif torsoMSG.count("1") > 1:
+            self.torso = "none"
+            self.bodyError.append(1)
 
-        if astronautArray[8] == "1":
-            self.helmet = "gas"
-        elif astronautArray[9] == "1":
-            self.helmet = "oxygen"
-        elif astronautArray[10] == "1":
+        helmetMSG = astronautArray[8:11]
+        print(helmetMSG)
+        if helmetMSG.count("1") == 1:
+            if astronautArray[8] == "1":
+                self.helmet = "gas"
+            elif astronautArray[9] == "1":
+                self.helmet = "oxygen"
+            elif astronautArray[10] == "1":
+                self.helmet = "no"
+            self.bodyError.append(0)
+        elif "1" not in helmetMSG:
             self.helmet = "none"
+            self.bodyError.append(1)
+        elif helmetMSG.count("1") > 1:
+            self.helmet = "none"
+            self.bodyError.append(1)
+        print(self.bodyError)
 
     def setPlanet(self, planetArray):
         """
@@ -232,6 +278,8 @@ class DatCalc:
             self.planet = "Neptune"
         elif "1" not in planetArray:
             self.planet = "Earth"
+        elif planetArray.count("1") > 1:
+            self.planet = "Too many"
 
     def getSurvival(self):
         return self.survival, self.survivalBool
@@ -251,3 +299,17 @@ class DatCalc:
 
     def returnDist(self):
         return self.curData[12]
+
+    def returnError(self):
+        self.error.clear()
+        if self.planet == "Earth":
+            self.error.append(1)
+        elif self.planet == "Too many":
+            self.error.append(2)
+        else:
+            self.error.append(0)
+
+        if "1" in self.bodyError:
+            self.error.append(1)
+        print(self.error)
+        return self.error
