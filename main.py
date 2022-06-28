@@ -90,8 +90,6 @@ class Main:
         Dead
         '''
 
-        print(self.preLaunched)
-
         self.planet = self.datCalc.planet
 
         if self.preLaunched:
@@ -151,7 +149,7 @@ class Main:
             self.serial.encoder("planetData", self.datCalc.curData)
         self.heartBeatScreen.display(self.state)
         self.peakCount = 0
-        self.preLaunched = bool(self.serial.getLaunched())
+        self.preLaunched = self.serial.getLaunched()
 
     # when the user pressed the button
     def launchState(self):
@@ -224,16 +222,18 @@ class Main:
     # Checks for errors when launch happens
     def errorCheck(self):
         error = self.datCalc.returnError()
-        if error[0] == "1":
+        print(error)
+        print(self.errorDisplay)
+        if error[0] == 1:
             self.error.setErrorText('You want to stay here?', 'Select a planet to travel to')
             self.errorDisplay = True
-        elif error[0] == "2":
+        elif error[0] == 2:
             self.error.setErrorText('You can stay at only one planet', 'Select only one planet to travel to')
             self.errorDisplay = True
-        elif error[1] == "1":
+        elif error[1] == 1:
             self.error.setErrorText('No Aliens Allowed!', 'Check the spacesuit compartment')
             self.errorDisplay = True
-        elif error[0] == "0" and error[1] == "0":
+        elif error[0] == 0 and error[1] == 0:
             self.preLaunched = self.launched
             self.preLaunched = False
             self.errorDisplay = False

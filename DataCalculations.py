@@ -307,5 +307,6 @@ class DatCalc:
 
         if "1" in self.bodyError:
             self.error.append(1)
-        print(self.error)
+        else:
+            self.error.append(0)
         return self.error
