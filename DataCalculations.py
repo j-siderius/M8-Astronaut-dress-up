@@ -37,13 +37,7 @@ class DatCalc:
         self.oxygen = 21
         self.temperature = 15
         self.gasGiant = "No"
-
-        '''Calls functions for testing'''
-        #self.setBodyParts()
-        #self.dataConnect()
-        #self.dataRelevant()
-        #self.survivalCalc()
-        #self.planetScoreCalc()
+        self.granular = []
 
     def dataConnect(self):
         """
@@ -64,12 +58,10 @@ class DatCalc:
                 pop.append(self.rows[i][j])
             self.rows[i] = pop
 
-    def dataRelevant(self, planet):
+    def dataRelevant(self):
         """
         This function will determine which data is relevant.
         """
-
-        self.planet = planet
 
         for i in range(0, len(self.rows)):
             if self.planet in self.rows[i]:
@@ -87,6 +79,7 @@ class DatCalc:
         Surface Temperature = 4
         Gas Giant = 5
         '''
+        self.granular.clear()
         self.survival.clear()
         '''Calculates survivability and stores it in list'''
         self.survival.append(self.gravityCalc(float(self.curData[1])))
@@ -119,10 +112,13 @@ class DatCalc:
         Calculates the toxicity survivability
         """
         if data == "No":
+            self.granular.append(0)
             return True
-        elif self.helmet == "gas" or self.helmet == "gasoxygen":
+        elif self.helmet == "gas":
+            self.granular.append(0)
             return True
         else:
+            self.granular.append(1)
             return False
 
     def oxygenCalc(self, data):
@@ -130,10 +126,13 @@ class DatCalc:
         Calculates the oxygen survivability
         """
         if data == "Yes":
+            self.granular.append(1)
             return True
-        elif self.helmet == "oxygen" or self.helmet == "gasoxygen":
+        elif self.helmet == "oxygen" or self.helmet == "gas":
+            self.granular.append(1)
             return True
         else:
+            self.granular.append(0)
             return False
 
     def temperatureCalc(self, data):
@@ -141,12 +140,25 @@ class DatCalc:
         Calculates the temperature survivability
         """
         if self.temperatureLimitUpper > data > self.temperatureLimitLower and self.torso == "none":
+            self.granular.append(1)
             return True
         elif data > self.temperatureLimitUpper and self.torso == "cool":
+            self.granular.append(1)
             return True
         elif data < self.temperatureLimitLower and self.torso == "hot":
+            self.granular.append(1)
             return True
-        else:
+        elif data > self.temperatureLimitUpper and self.torso != "hot":
+            self.granular.append(2)
+            return False
+        elif data < self.temperatureLimitLower and self.torso != "cool":
+            self.granular.append(0)
+            return False
+        elif self.temperatureLimitUpper > data > self.temperatureLimitLower and self.torso == "hot":
+            self.granular.append(2)
+            return False
+        elif self.temperatureLimitUpper > data > self.temperatureLimitLower and self.torso == "cool":
+            self.granular.append(0)
             return False
 
     def gasGiantCalc(self, data):
@@ -154,10 +166,13 @@ class DatCalc:
         Calculates the gas giant survivability
         """
         if data == "No":
+            self.granular.append(0)
             return True
         elif self.legs == "rocket":
+            self.granular.append(0)
             return True
         else:
+            self.granular.append(1)
             return False
 
     def setBodyParts(self, astronautArray):
@@ -165,86 +180,58 @@ class DatCalc:
         Sets value of the bodyparts, based on what the user selected
         """
 
-        if astronautArray[0] == 1:
+        print(astronautArray)
+
+        if astronautArray[0] == "1":
             self.boots = "light"
-        elif astronautArray[1] == 1:
+        elif astronautArray[1] == "1":
             self.boots = "medium"
-        elif astronautArray[2] == 1:
+        elif astronautArray[2] == "1":
             self.boots = "heavy"
 
         # TODO: fix to current body parts
-        if astronautArray[3] == 1:
-            self.legs = "rocket"
-        else:
-            self.boots = "none"
+        if astronautArray[3] == "1":
+            self.legs = "none"
+        elif astronautArray[4] == "1":
+            self.boots = "rocket"
 
-        if astronautArray[4] == 1:
+        if astronautArray[5] == "1":
             self.torso = "cool"
-        elif astronautArray[5] == 1:
+        elif astronautArray[6] == "1":
             self.torso = "none"
-        elif astronautArray[6] == 1:
+        elif astronautArray[7] == "1":
             self.torso = "hot"
 
-        if astronautArray[7] == 1:
+        if astronautArray[8] == "1":
             self.helmet = "gas"
-        elif astronautArray[8] == 1:
-            self.helmet = "gasoxygen"
-        elif astronautArray[9] == 1:
+        elif astronautArray[9] == "1":
             self.helmet = "oxygen"
-        elif astronautArray[10] == 1:
+        elif astronautArray[10] == "1":
             self.helmet = "none"
 
-
     def setPlanet(self, planetArray):
-        '''
+        """
         Sets value of planet, based on what the user selected
-        '''
+        """
 
-        if planetArray[0] == 1:
+        if planetArray[0] == "1":
             self.planet = "Mercury"
-        elif planetArray[1] == 1:
+        elif planetArray[1] == "1":
             self.planet = "Venus"
-        elif planetArray[2] == 1:
+        elif planetArray[2] == "1":
             self.planet = "Moon"
-        elif planetArray[3] == 1:
+        elif planetArray[3] == "1":
             self.planet = "Mars"
-        elif planetArray[4] == 1:
+        elif planetArray[4] == "1":
             self.planet = "Jupiter"
-        elif planetArray[5] == 1:
+        elif planetArray[5] == "1":
             self.planet = "Saturn"
-        elif planetArray[6] == 1:
+        elif planetArray[6] == "1":
             self.planet = "Uranus"
-        elif planetArray[7] == 1:
+        elif planetArray[7] == "1":
             self.planet = "Neptune"
-
-
-    def planetScoreCalc(self):
-        """
-        This function calculates the values for physicalizing the planet data and passing to survivalcalc
-        """
-
-        '''
-        Gravity = 1
-        Toxic = 6
-        Oxygen = 7
-        Surface Temperature = 4
-        Gas Giant = 5
-        '''
-
-        '''Puts data in the variables'''
-        self.gravity = self.curData[1]
-        self.toxic = self.curData[6]
-        self.oxygen = self.curData[7]
-        self.temperature = self.curData[4]
-        self.gasGiant = self.curData[5]
-
-        print('')
-        print('Accurate data:')
-        print('gravity ' + self.gravity)
-        print('toxicity ' + self.toxic)
-        print('oxygen ' + self.oxygen)
-        print('temperature ' + self.temperature)
-        print('gasgiant ' + self.gasGiant)
+        elif "1" not in planetArray:
+            self.planet = "Earth"
 
     def getSurvival(self):
         return self.survival, self.survivalBool
@@ -252,8 +239,15 @@ class DatCalc:
     def getPlanetData(self):
         return self.curData
 
+    def getGranularData(self):
+        """
+        Granular data: an array of 4 variables. Only used once the astronaut has landed on the planet
+        first value = toxicity; 0 = no toxic, 1 = toxic
+        second value = oxygen; 0 = no oxygen, 1 = oxygen
+        third value = temperature; 0 = cold, 1 = normal, 2 is hot
+        fourth value = gas giant; 0 = no gas giant, 1 = gas giant
+        """
+        return self.granular
+
     def returnDist(self):
         return self.curData[12]
-
-
-    #TODO: make a function for the granular data (aka the output data changes after launching the astronaut)
