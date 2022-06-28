@@ -188,7 +188,6 @@ class DatCalc:
         self.bodyError.clear()
 
         bootsMSG = astronautArray[0:3]
-        print(bootsMSG)
         if bootsMSG.count("1") == 1:
             if bootsMSG[0] == "1":
                 self.boots = "light"
@@ -206,7 +205,6 @@ class DatCalc:
 
         # TODO: fix to current body parts
         legsMSG = astronautArray[3:5]
-        print(legsMSG)
         if legsMSG.count("1") == 1:
             if legsMSG[0] == "1":
                 self.legs = "regular"
@@ -221,7 +219,6 @@ class DatCalc:
             self.bodyError.append(1)
 
         torsoMSG = astronautArray[5:8]
-        print(torsoMSG)
         if torsoMSG.count("1") == 1:
             if astronautArray[5] == "1":
                 self.torso = "cool"
@@ -238,7 +235,6 @@ class DatCalc:
             self.bodyError.append(1)
 
         helmetMSG = astronautArray[8:11]
-        print(helmetMSG)
         if helmetMSG.count("1") == 1:
             if astronautArray[8] == "1":
                 self.helmet = "gas"

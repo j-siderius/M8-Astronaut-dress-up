@@ -87,8 +87,8 @@ class Serial:
         while True:
             # read all available from the serial port and print to serial
             buffer = self.port.readline().decode()
+            print("Incoming serial:", buffer)  # debugging
             self.decode(buffer)
-            # print(buffer)  # debugging
             # time.sleep(0.001)  # debugging
 
             # check periodically if we have messages in the buffer still to send
