@@ -153,6 +153,7 @@ class Main:
 
     # when the user pressed the button
     def launchState(self):
+        self.serial.setLaunched(False)
         self.sound.launching()
 
         if self.delay(1000):
@@ -176,12 +177,20 @@ class Main:
         self.sound.backGroundNoise()
         self.heartBeatScreen.display(self.state)
         survival = self.datCalc.getSurvival()
+        data = self.datCalc.getPlanetData()
+        granular = self.datCalc.getGranularData()
+        if self.delay(200):
+            self.landed = True
+        if not self.landed:
+            if data[3] == "Yes":
+                self.sound.oxygen()
+        elif self.landed:
+            if granular[1] == 1:
+                self.sound.oxygen()
         if survival[1]:
             self.survival = True
         else:
             self.survival = False
-        if self.delay(200):
-            self.landed = True
         if self.landed:
             if self.heartBeatScreen.detectPeak() < 13:
                 self.sound.heartBeat()
@@ -227,12 +236,15 @@ class Main:
         if error[0] == 1:
             self.error.setErrorText('You want to stay here?', 'Select a planet to travel to')
             self.errorDisplay = True
+            self.serial.setLaunched(False)
         elif error[0] == 2:
             self.error.setErrorText('You can stay at only one planet', 'Select only one planet to travel to')
             self.errorDisplay = True
+            self.serial.setLaunched(False)
         elif error[1] == 1:
             self.error.setErrorText('No Aliens Allowed!', 'Check the spacesuit compartment')
             self.errorDisplay = True
+            self.serial.setLaunched(False)
         elif error[0] == 0 and error[1] == 0:
             self.error.setErrorText(' ', ' ')
             self.launched = self.preLaunched

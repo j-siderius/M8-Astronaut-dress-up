@@ -116,10 +116,7 @@ class Serial:
             # launch confirmation
             index = message.index("L")+1
             launchConfirm = message[index:index+1]
-            if launchConfirm == "1":
-                self.launched = True
-            elif launchConfirm == "0":
-                self.launched = False
+            self.launched = True
             print("launchConfirm", launchConfirm)
         elif "C" in message:
             # message received confirmation
@@ -216,3 +213,6 @@ class Serial:
 
     def getLaunched(self):
         return self.launched
+
+    def setLaunched(self, launched):
+        self.launched = launched

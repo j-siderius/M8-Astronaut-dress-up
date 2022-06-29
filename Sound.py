@@ -20,7 +20,7 @@ class Sound:
         """
 
         pygame.mixer.init()
-        pygame.mixer.set_num_channels(11)
+        pygame.mixer.set_num_channels(12)
 
         # All the mixer channels
         self.buttonPressed = pygame.mixer.Channel(0)
@@ -34,6 +34,7 @@ class Sound:
         self.spaceTravel = pygame.mixer.Channel(8)
         self.enterSpace = pygame.mixer.Channel(9)
         self.victory = pygame.mixer.Channel(10)
+        self.oxygenPsst = pygame.mixer.Channel(11)
 
         # Individual sounds
         self.selectSound = pygame.mixer.Sound('Sounds/Planet select.wav')
@@ -45,6 +46,7 @@ class Sound:
         self.buzLaunchSound = pygame.mixer.Sound('Sounds/Buzlaunch.wav')
         self.doorSound = pygame.mixer.Sound('Sounds/Spaceship Door.wav')
         self.victorySound = pygame.mixer.Sound('Sounds/Victory sound.wav')
+        self.oxygenSound = pygame.mixer.Sound('Sounds/Oxygen sound.wav')
         # Background sounds
         self.spaceMusic = pygame.mixer.Sound('Sounds/Space music.mp3')
         self.earthMusic = pygame.mixer.Sound('Sounds/Earth music.mp3')
@@ -98,6 +100,10 @@ class Sound:
     def survived(self):
         if not self.victory.get_busy():
             self.victory.play(self.victorySound)
+
+    def oxygen(self):
+        if not self.oxygenPsst.get_busy():
+            self.oxygenPsst.play()
 
     def stopSound(self):
         """
