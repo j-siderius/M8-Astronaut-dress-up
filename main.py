@@ -44,7 +44,6 @@ class Main:
         self.launched = False
         self.preLaunched = False
         self.landed = False
-        self.travelDuration = 10
         self.survival = False
         self.errorDisplay = False
 
@@ -166,9 +165,8 @@ class Main:
     # when the rocket is traveling through space
     def travelState(self):
         self.sound.travel()
-        travelDelay = int((float(self.datCalc.returnDist()) ** 0.25) * self.frameRate * self.travelDuration)
-        self.serial.encoder("travelTime", travelDelay)
-        if self.delay(travelDelay):
+        self.serial.encoder("travelTime", self.datCalc.getTravelTime)
+        if self.delay(self.datCalc.getTravelTime):
             self.sound.landing()
             self.state = 3
 

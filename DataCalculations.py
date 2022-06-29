@@ -42,6 +42,9 @@ class DatCalc:
         self.bodyError = []
         self.error = []
 
+        self.frameRate = 60
+        self.travelDuration = 10
+
     def dataConnect(self):
         """
         This function will connect to the .csv file and store the data in a list.
@@ -308,3 +311,7 @@ class DatCalc:
         else:
             self.error.append(0)
         return self.error
+
+    def getTravelTime(self):
+        travelDelay = int((float(self.curData[12]) ** 0.25) * self.frameRate * self.travelDuration)
+        return travelDelay
