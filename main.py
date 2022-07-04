@@ -57,6 +57,7 @@ class Main:
         Start functions, initializes the screen
         """
         self.runBool = True
+        self.serial.encoder("flowState", str(self.state))
         self.loop()
 
     def loop(self):
@@ -93,6 +94,15 @@ class Main:
 
         if self.preLaunched:
             self.errorCheck()
+
+        '''
+        #TODO: remove this{
+        if self.state == 0:
+            if self.delay(100):
+                self.state = 1
+                self.datCalc.dataRelevant()
+        #}
+        '''
 
         # If the user has pressed the big red button
         if self.launched:
@@ -131,7 +141,8 @@ class Main:
 
         # runs every second
         if self.frameCount % 60 == 0:
-            pass
+            print(self.state)
+            #pass
 
     # when the user is still on earth selecting planets
     def earthState(self):
@@ -141,7 +152,6 @@ class Main:
             self.prevPlanet = self.planet
             self.sound.selectPlanet()
             self.datCalc.dataRelevant()
-            self.datCalc.survivalCalc()
             self.serial.encoder("planetName", self.planet)
             self.serial.encoder("planetData", self.datCalc.curData)
         self.peakCount = 0
@@ -155,8 +165,10 @@ class Main:
     def launchState(self):
         self.serial.setLaunched(False)
         self.sound.launching()
-
+        #travelTime = self.datCalc.getTravelTime()
         if self.delay(1000):
+            self.datCalc.survivalCalc()
+            self.serial.encoder("travelTime", 10)
             granular = self.datCalc.granular
             print(granular)
             self.serial.encoder("astronautSurvival", granular)
@@ -166,8 +178,9 @@ class Main:
     # when the rocket is traveling through space
     def travelState(self):
         self.sound.travel()
-        self.serial.encoder("travelTime", self.datCalc.getTravelTime)
-        if self.delay(self.datCalc.getTravelTime):
+        #travelTime = self.datCalc.getTravelTime() * self.frameRate
+        if self.delay(600):
+            #print(travelTime)
             self.sound.landing()
             self.state = 3
 
@@ -192,16 +205,16 @@ class Main:
         else:
             self.survival = False
         if self.landed:
-            if self.heartBeatScreen.detectPeak() < 13:
+            if self.heartBeatScreen.detectPeak() < 20:
                 self.sound.heartBeat()
                 self.peakCount += 1
         if not self.survival:
-            self.heartBeatScreen.speed *= 1.0015
+            self.heartBeatScreen.speed *= 1.002
             if self.heartBeatScreen.speed > 4:
                 self.state = 4
         elif self.survival:
             self.heartBeatScreen.speed = 1
-            if self.peakCount > 20:
+            if self.peakCount > 10:
                 self.state = 5
 
     # when the astronaut dies
@@ -210,16 +223,18 @@ class Main:
         self.heartBeatScreen.display(self.state)
         self.heartBeatScreen.speed = 0
         if self.delay(400):
-            self.resetValues()
+            print("Finished")
             self.state = 0
+            self.resetValues()
 
     # when the astronaut survives
     def survivalState(self):
         self.heartBeatScreen.display(self.state)
         self.sound.survived()
         if self.delay(400):
-            self.resetValues()
+            print("Finished")
             self.state = 0
+            self.resetValues()
 
     # A simple delay check method
     def delay(self, delay):
@@ -252,7 +267,17 @@ class Main:
             self.errorDisplay = False
 
     def resetValues(self):
+        self.state = 0
         self.heartBeatScreen.speed = 1
+        self.planet = "Earth"
+        self.prevPlanet = "Earth"
+        self.launched = False
+        self.preLaunched = False
+        self.landed = False
+        self.survival = False
+        self.errorDisplay = False
+        self.frameCount = 0
+        print("Reset")
 
     # A test animator, which automatically selects planets and presses launch button
     def testAnimator(self):

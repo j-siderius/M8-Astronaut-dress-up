@@ -11,7 +11,7 @@ class Heartbeat:
 		pygame.font.init()
 
 		# screen and variables
-		self.screen = pygame.display.set_mode((400, 200))
+		self.screen = pygame.display.set_mode((800, 600))
 		self.screen_width, screen_height = pygame.display.get_surface().get_size()
 
 		self.font = pygame.font.SysFont('arial', 18)
@@ -32,6 +32,8 @@ class Heartbeat:
 		# loop variables
 		self.speed = 1
 		self.ecgRemember = 0
+		self.extraSpeed = 0.5
+		self.heartBeatHeight = 155
 
 	def readHeartrateVolt(self):
 		file = open('heart_rate_onecycle.csv')
@@ -59,7 +61,7 @@ class Heartbeat:
 			bpm_text = self.font.render(bpm_string, False, self.WHITE)
 			self.screen.blit(bpm_text, (5, 5))
 
-			ecgPos = int(self.posX * self.speed)
+			ecgPos = int(self.posX * self.speed * self.extraSpeed)
 
 			# increase the x-position every frame
 			if self.posX < self.screen_width:
@@ -71,7 +73,7 @@ class Heartbeat:
 				self.ecgRemember = ecgPos % len(self.ecg) + self.ecgRemember
 
 			# fills a list with y-values
-			self.currentFrame.append(self.initialY - int((self.ecg[(ecgPos + self.ecgRemember) % len(self.ecg)] * 100)))
+			self.currentFrame.append(self.initialY - int((self.ecg[(ecgPos + self.ecgRemember) % len(self.ecg)] * self.heartBeatHeight)))
 
 			for i in range(len(self.currentFrame)):
 				# draw a line between the calculated points

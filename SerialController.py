@@ -67,6 +67,7 @@ class Serial:
         :param argument: the serial message to send
         """
 
+        print("Write: " + argument)
         if not self.waitingForConfirmation:
             # send the message
             # convert the argument to the proper encoding
@@ -74,6 +75,7 @@ class Serial:
             self.port.write(arg)
             self.confirmToken = str(arg[0])
             self.waitingForConfirmation = True
+            print(argument)
         else:
             # still waiting for confirmation, wait with sending and add to buffer
             self.messageBuffer.append(argument)
@@ -86,9 +88,14 @@ class Serial:
         # this function runs within a thread, so we can introduce a infinite loop
         while True:
             # read all available from the serial port and print to serial
-            buffer = self.port.readline().decode()
-            print("Incoming serial:", buffer)  # debugging
-            self.decode(buffer)
+            try:
+                buffer = self.port.readline()
+                print(buffer)
+                buffer = buffer.decode()
+                print("Incoming serial:", buffer)  # debugging
+                self.decode(buffer)
+            except UnicodeDecodeError:
+                pass
             # time.sleep(0.001)  # debugging
 
             # check periodically if we have messages in the buffer still to send
@@ -110,7 +117,7 @@ class Serial:
         elif "AA" in message:
             # astronaut array (11 parts)
             index = message.index("AA")+2
-            astronautArray = message[index:index+11]
+            astronautArray = message[index:index+16]
             self.dataObj.setBodyParts(astronautArray)
         elif "L" in message:
             # launch confirmation
@@ -120,12 +127,18 @@ class Serial:
             print("launchConfirm", launchConfirm)
         elif "C" in message:
             # message received confirmation
-            if message[1] != self.confirmToken:
+            if message[1] != self.con.firmToken:
                 print("Confirmation receipt error: Confirmation does not match the sent function!")
             else:
                 self.waitingForConfirmation = False
+
+        elif "Initialized" in message:
+            time.sleep(0.25)
+            arg = bytes("F0".encode())
+            self.port.write(arg)
+
         else:
-            print("Serial message could not be decoded")
+            print("Serial message could not be decoded:", message)
 
     def encoder(self, function, data=None):
         """
@@ -157,7 +170,10 @@ class Serial:
                 msg += 'E' + str(data[6]) + '|' + str(data[7]) + '|' + str(data[8]) + '|' + str(data[9]) + '|' + str(data[10]) + '|' + str(data[11])  # Elements: CO2|N2|O2|CH4|H2|He
                 msg += 'P' + str(data[12])  # pressure
                 msg += 'D' + str(data[13])  # distance
-                self.writeSerial(msg)
+                # self.writeSerial(msg)
+
+                arg = bytes(msg.encode())
+                self.port.write(arg)
             else:
                 print("data array is not correct!")
 
@@ -165,8 +181,12 @@ class Serial:
             # incoming data is data array, name is pos 0
             # outgoing data format: N[name]
             if data is not None: #TODO: fix the planetName encoding
-                msg = 'N' + str(data[0])  # name
-                self.writeSerial(msg)
+                msg = 'N' + str(data) + '\n'  # name
+                # self.writeSerial(msg)
+
+                arg = bytes(msg.encode())
+                self.port.write(arg)
+                print(arg)
             else:
                 print("data array is not correct!")
 
@@ -181,26 +201,40 @@ class Serial:
             if data is not None and len(data) == 4:
                 msg = 'S'
                 msg += str(data[0]) + str(data[1]) + str(data[2]) + str(data[3])
-                self.writeSerial(msg)
+                # self.writeSerial(msg)
+
+                arg = bytes(msg.encode())
+                self.port.write(arg)
             else:
                 print("data array is not correct!")
 
         elif function == "flowState":
             # sends current state
-            if data is not None and data.isnumeric():
+            if data is not None:  # and data.isnumeric()
                 msg = 'F' + str(data)
-                self.writeSerial(msg)
+                # self.writeSerial
+
+                arg = bytes(msg.encode())
+                self.port.write(arg)
+                print(arg)
 
         elif function == "travelTime":
             # sends the travel time to the planet
             if data is not None:
                 msg = 'T' + str(data)
-                self.writeSerial(msg)
+                # self.writeSerial(msg)
+
+                arg = bytes(msg.encode())
+                self.port.write(arg)
+                print(arg)
 
         elif function == "launchConfirm":
             if data is not None:
                 msg = 'L' + str(data)
-                self.writeSerial(msg)
+                # self.writeSerial(msg)
+
+                arg = bytes(msg.encode())
+                self.port.write(arg)
 
     def messageQueue(self):
         """

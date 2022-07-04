@@ -52,6 +52,10 @@ class Sound:
         self.earthMusic = pygame.mixer.Sound('Sounds/Earth music.mp3')
         self.travelSound = pygame.mixer.Sound('Sounds/TravelSound.wav')
 
+        pygame.mixer.Sound.set_volume(self.heartbeepSound, 0.6)
+        pygame.mixer.Sound.set_volume(self.heartbeeplongSound, 0.6)
+        pygame.mixer.Sound.set_volume(self.oxygenSound, 0.1)
+
     def selectPlanet(self):
         if self.select.get_busy():
             self.select.stop()
@@ -103,7 +107,7 @@ class Sound:
 
     def oxygen(self):
         if not self.oxygenPsst.get_busy():
-            self.oxygenPsst.play()
+            self.oxygenPsst.play(self.oxygenSound)
 
     def stopSound(self):
         """

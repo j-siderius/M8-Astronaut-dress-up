@@ -43,7 +43,7 @@ class DatCalc:
         self.error = []
 
         self.frameRate = 60
-        self.travelDuration = 10
+        self.travelDuration = 5
 
     def dataConnect(self):
         """
@@ -88,6 +88,7 @@ class DatCalc:
         self.granular.clear()
         self.survival.clear()
         '''Calculates survivability and stores it in list'''
+        print(self.curData)
         self.survival.append(self.gravityCalc(float(self.curData[1])))
         self.survival.append(self.toxicityCalc(self.curData[2]))
         self.survival.append(self.oxygenCalc(self.curData[3]))
@@ -95,6 +96,7 @@ class DatCalc:
         self.survival.append(self.gasGiantCalc(self.curData[5]))
 
         '''Determines total survival based on the calculations'''
+        print(self.survival)
         if False in self.survival:
             self.survivalBool = False
         else:
@@ -104,6 +106,7 @@ class DatCalc:
         """
         Calculates the gravity survivability
         """
+        print(self.boots)
         if self.gravityLimitUpper > data > self.gravityLimitLower and self.boots == "none":
             return True
         elif data > self.gravityLimitUpper and self.boots == "light":
@@ -117,6 +120,7 @@ class DatCalc:
         """
         Calculates the toxicity survivability
         """
+        print(self.helmet)
         if data == "No":
             self.granular.append(0)
             return True
@@ -131,6 +135,7 @@ class DatCalc:
         """
         Calculates the oxygen survivability
         """
+        print(self.helmet)
         if data == "Yes":
             self.granular.append(1)
             return True
@@ -145,6 +150,7 @@ class DatCalc:
         """
         Calculates the temperature survivability
         """
+        print(self.torso)
         if self.temperatureLimitUpper > data > self.temperatureLimitLower and self.torso == "regular":
             self.granular.append(1)
             return True
@@ -154,11 +160,12 @@ class DatCalc:
         elif data < self.temperatureLimitLower and self.torso == "hot":
             self.granular.append(1)
             return True
-        elif data > self.temperatureLimitUpper and self.torso != "hot":
+        elif data > self.temperatureLimitUpper and self.torso != "cool":
             self.granular.append(2)
             return False
-        elif data < self.temperatureLimitLower and self.torso != "cool":
+        elif data < self.temperatureLimitLower and self.torso != "hot":
             self.granular.append(0)
+            print("yaaaaaaaaaaaaaaayy")
             return False
         elif self.temperatureLimitUpper > data > self.temperatureLimitLower and self.torso == "hot":
             self.granular.append(2)
@@ -171,6 +178,7 @@ class DatCalc:
         """
         Calculates the gas giant survivability
         """
+        print(self.legs)
         if data == "No":
             self.granular.append(0)
             return True
@@ -186,9 +194,17 @@ class DatCalc:
         Sets value of the bodyparts, based on what the user selected
         """
 
+        '''
+        
+        '''
+
         self.bodyError.clear()
 
-        bootsMSG = astronautArray[0:3]
+        bootsMSG = [astronautArray[4], astronautArray[2], astronautArray[0]]
+        legsMSG = [astronautArray[1], astronautArray[6]]
+        torsoMSG = [astronautArray[7], astronautArray[5], astronautArray[3]]
+        helmetMSG = [astronautArray[10], astronautArray[12], astronautArray[8]]
+        print(legsMSG)
         if bootsMSG.count("1") == 1:
             if bootsMSG[0] == "1":
                 self.boots = "light"
@@ -204,29 +220,26 @@ class DatCalc:
             self.boots = "none"
             self.bodyError.append(1)
 
-        # TODO: fix to current body parts
-        legsMSG = astronautArray[3:5]
         if legsMSG.count("1") == 1:
             if legsMSG[0] == "1":
                 self.legs = "regular"
             elif legsMSG[1] == "1":
-                self.boots = "rocket"
+                self.legs = "rocket"
             self.bodyError.append(0)
         elif "1" not in legsMSG:
-            self.boots = "none"
+            self.legs = "none"
             self.bodyError.append(1)
         elif legsMSG.count("1") > 1:
-            self.boots = "none"
+            self.legs = "none"
             self.bodyError.append(1)
 
-        torsoMSG = astronautArray[5:8]
         if torsoMSG.count("1") == 1:
-            if astronautArray[5] == "1":
-                self.torso = "cool"
-            elif astronautArray[6] == "1":
-                self.torso = "regular"
-            elif astronautArray[7] == "1":
+            if torsoMSG[0] == "1":
                 self.torso = "hot"
+            elif torsoMSG[1] == "1":
+                self.torso = "regular"
+            elif torsoMSG[2] == "1":
+                self.torso = "cool"
             self.bodyError.append(0)
         elif "1" not in torsoMSG:
             self.torso = "none"
@@ -235,13 +248,12 @@ class DatCalc:
             self.torso = "none"
             self.bodyError.append(1)
 
-        helmetMSG = astronautArray[8:11]
         if helmetMSG.count("1") == 1:
-            if astronautArray[8] == "1":
+            if helmetMSG[0] == "1":
                 self.helmet = "gas"
-            elif astronautArray[9] == "1":
+            elif helmetMSG[1] == "1":
                 self.helmet = "oxygen"
-            elif astronautArray[10] == "1":
+            elif helmetMSG[2] == "1":
                 self.helmet = "no"
             self.bodyError.append(0)
         elif "1" not in helmetMSG:
@@ -249,7 +261,7 @@ class DatCalc:
             self.bodyError.append(1)
         elif helmetMSG.count("1") > 1:
             self.helmet = "none"
-            self.bodyError.append(1)
+            self.bodyError.append(2)
 
     def setPlanet(self, planetArray):
         """
@@ -261,17 +273,17 @@ class DatCalc:
             print("Too many planets")
         elif planetArray[0] == "1":
             self.planet = "Mercury"
-        elif planetArray[1] == "1":
-            self.planet = "Venus"
         elif planetArray[2] == "1":
+            self.planet = "Venus"
+        elif planetArray[1] == "1":
             self.planet = "Moon"
         elif planetArray[3] == "1":
             self.planet = "Mars"
         elif planetArray[4] == "1":
             self.planet = "Jupiter"
-        elif planetArray[5] == "1":
-            self.planet = "Saturn"
         elif planetArray[6] == "1":
+            self.planet = "Saturn"
+        elif planetArray[5] == "1":
             self.planet = "Uranus"
         elif planetArray[7] == "1":
             self.planet = "Neptune"
@@ -313,5 +325,5 @@ class DatCalc:
         return self.error
 
     def getTravelTime(self):
-        travelDelay = int((float(self.curData[12]) ** 0.25) * self.frameRate * self.travelDuration)
+        travelDelay = int((float(self.curData[12]) ** 0.25) * self.travelDuration)
         return travelDelay
